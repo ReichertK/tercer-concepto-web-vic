@@ -3,6 +3,7 @@ import SEOHead from '../components/seo/SEOHead'
 import Hero from '../components/ui/Hero'
 import SectionHeading from '../components/ui/SectionHeading'
 import AnimatedSection from '../components/ui/AnimatedSection'
+import { asset } from '../utils/assets'
 
 interface ProductCard {
   image: string
@@ -83,7 +84,7 @@ function ProductEntry({ product, delay }: { product: ProductCard; delay: number 
     <AnimatedSection delay={delay}>
       <div className="flex h-full flex-col rounded-xl border border-brand-border bg-white p-6 shadow-soft transition-shadow hover:shadow-medium dark:border-gray-800 dark:bg-gray-900">
         <img
-          src={product.image}
+          src={asset(product.image)}
           alt={product.title}
           className="mb-4 h-28 w-28 self-center object-contain"
           loading="lazy"

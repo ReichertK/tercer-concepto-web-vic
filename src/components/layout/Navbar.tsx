@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { Menu, X, Moon, Sun } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '../../hooks/useTheme'
+import { asset } from '../../utils/assets'
 
 const navLinks = [
   { to: '/', label: 'Inicio' },
@@ -21,7 +22,7 @@ export default function Navbar() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Link to="/" className="flex shrink-0 items-center gap-2">
-            <img src="/img/logo2.png" alt="PHIRIT" className="h-12 w-12" />
+            <img src={asset('/img/logo2.png')} alt="PHIRIT" className="h-12 w-12" />
           </Link>
 
           <div className="hidden md:flex md:items-center md:gap-1">

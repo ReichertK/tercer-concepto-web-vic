@@ -4,6 +4,7 @@ import SEOHead from '../components/seo/SEOHead'
 import Hero from '../components/ui/Hero'
 import ServiceCard from '../components/ui/ServiceCard'
 import AnimatedSection from '../components/ui/AnimatedSection'
+import { asset } from '../utils/assets'
 
 const features = [
   {
@@ -66,7 +67,7 @@ export default function Home() {
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <AnimatedSection>
               <img
-                src="/img/illustrations/presentation-2.svg"
+                src={asset('/img/illustrations/presentation-2.svg')}
                 alt="Presentación del ecosistema"
                 className="w-full max-w-md mx-auto"
                 loading="lazy"

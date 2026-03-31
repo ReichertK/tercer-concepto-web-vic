@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import SEOHead from '../components/seo/SEOHead'
+import { asset } from '../utils/assets'
 
 export default function NotFound() {
   return (
@@ -19,7 +20,7 @@ export default function NotFound() {
           className="text-center"
         >
           <img
-            src="/img/illustrations/404.svg"
+            src={asset('/img/illustrations/404.svg')}
             alt="Página no encontrada"
             className="mx-auto mb-8 w-full max-w-md"
           />

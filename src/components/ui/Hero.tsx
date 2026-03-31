@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import type { ReactNode } from 'react'
+import { asset } from '../../utils/assets'
 
 interface HeroProps {
   title: ReactNode
@@ -62,7 +63,7 @@ export default function Hero({ title, subtitle, primaryAction, secondaryAction, 
               className="flex justify-center"
             >
               <img
-                src={image.src}
+                src={asset(image.src)}
                 alt={image.alt}
                 className="w-full max-w-lg"
                 loading="eager"

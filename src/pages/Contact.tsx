@@ -3,6 +3,7 @@ import SectionHeading from '../components/ui/SectionHeading'
 import ContactForm from '../components/ui/ContactForm'
 import FAQAccordion from '../components/ui/FAQAccordion'
 import AnimatedSection from '../components/ui/AnimatedSection'
+import { asset } from '../utils/assets'
 
 const faqItems = [
   {
@@ -50,7 +51,7 @@ export default function Contact() {
             </AnimatedSection>
             <AnimatedSection delay={0.15}>
               <img
-                src="/img/illustrations/video-call.svg"
+                src={asset('/img/illustrations/video-call.svg')}
                 alt="Contacto PHIRIT"
                 className="mx-auto w-full max-w-md"
                 loading="lazy"
