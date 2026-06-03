@@ -4,10 +4,27 @@ import { z } from 'zod'
 import { useState } from 'react'
 import { Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
 
+const NAME_REGEX = /^[\p{L}\p{M}'.\-\s]+$/u
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+
 const contactSchema = z.object({
-  name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
-  email: z.string().email('Ingresá un email válido'),
-  message: z.string().min(10, 'El mensaje debe tener al menos 10 caracteres'),
+  name: z
+    .string()
+    .trim()
+    .min(2, 'El nombre debe tener al menos 2 caracteres')
+    .max(80, 'El nombre es demasiado largo')
+    .regex(NAME_REGEX, 'El nombre solo puede contener letras y espacios'),
+  email: z
+    .string()
+    .trim()
+    .min(1, 'El email es obligatorio')
+    .max(120, 'El email es demasiado largo')
+    .regex(EMAIL_REGEX, 'Ingresá un email válido'),
+  message: z
+    .string()
+    .trim()
+    .min(10, 'El mensaje debe tener al menos 10 caracteres')
+    .max(1000, 'El mensaje no puede superar los 1000 caracteres'),
 })
 
 type ContactFormData = z.infer<typeof contactSchema>
@@ -24,13 +41,20 @@ export default function ContactForm() {
     formState: { errors },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
+    mode: 'onBlur',
   })
 
-  const onSubmit = async (_data: ContactFormData) => {
+  const onSubmit = async (data: ContactFormData) => {
     setStatus('submitting')
     try {
-      // Simular envío — reemplazar con endpoint real
+      // Simulamos el envío mientras no hay backend conectado.
       await new Promise((resolve) => setTimeout(resolve, 1500))
+      console.info('Datos validados y listos para enviar:', data)
+
+      // Para conectar el backend, reemplazar la línea de arriba por un fetch
+      // o axios al endpoint definido en import.meta.env.VITE_CONTACT_ENDPOINT.
+      // Ver el README para el detalle.
+
       setStatus('success')
       reset()
     } catch {
@@ -47,6 +71,7 @@ export default function ContactForm() {
           Gracias por contactarnos. Te responderemos a la brevedad.
         </p>
         <button
+          type="button"
           onClick={() => setStatus('idle')}
           className="mt-2 rounded-xl bg-brand-primary px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-primary-600"
         >
@@ -117,7 +142,7 @@ export default function ContactForm() {
         {status === 'submitting' ? (
           <>
             <Loader2 size={18} className="animate-spin" />
-            Enviando...
+            Enviando…
           </>
         ) : (
           <>

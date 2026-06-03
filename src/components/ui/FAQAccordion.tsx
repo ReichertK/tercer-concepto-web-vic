@@ -13,8 +13,8 @@ interface FAQAccordionProps {
 export default function FAQAccordion({ items }: FAQAccordionProps) {
   return (
     <div className="divide-y divide-brand-border rounded-xl border border-brand-border dark:divide-gray-800 dark:border-gray-800">
-      {items.map((item, i) => (
-        <Disclosure key={i} as="div">
+      {items.map((item) => (
+        <Disclosure key={item.question} as="div">
           {({ open }) => (
             <>
               <DisclosureButton className="flex w-full items-center justify-between px-5 py-4 text-left text-sm font-semibold text-gray-900 transition-colors hover:bg-brand-surface-alt dark:text-white dark:hover:bg-gray-800/50">

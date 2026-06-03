@@ -11,7 +11,7 @@ interface SEOHeadProps {
 const BASE_URL = 'https://phirit.com'
 
 export default function SEOHead({ title, description, path, image = '/img/logo2.png', noIndex }: SEOHeadProps) {
-  const fullTitle = `${title} - PHIRIT`
+  const fullTitle = `${title} | PHIR-IT`
   const canonicalUrl = `${BASE_URL}${path}`
   const imageUrl = `${BASE_URL}${image}`
 
@@ -22,7 +22,7 @@ export default function SEOHead({ title, description, path, image = '/img/logo2.
       <link rel="canonical" href={canonicalUrl} />
       {noIndex && <meta name="robots" content="noindex, nofollow" />}
 
-      <meta property="og:site_name" content="PHIRIT" />
+      <meta property="og:site_name" content="PHIR-IT" />
       <meta property="og:type" content="website" />
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />

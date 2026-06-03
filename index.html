@@ -5,7 +5,23 @@
     <link rel="icon" href="/img/logo2.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#1c9aea" />
-    <title>PHIRIT - Soluciones Tecnológicas para Salud</title>
+    <meta name="description" content="PHIR-IT: soluciones tecnológicas integrales para el sector salud. Ecosistema de RIS, PACS, informes y portal de pacientes para clínicas y centros de diagnóstico." />
+    <title>PHIR-IT | Soluciones Tecnológicas Integrales para Salud</title>
+
+    <!-- Aplica el tema guardado antes de pintar para evitar el parpadeo al recargar. -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('phirit-theme')
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          var theme = stored === 'light' || stored === 'dark' ? stored : prefersDark ? 'dark' : 'light'
+          document.documentElement.classList.toggle('dark', theme === 'dark')
+          document.documentElement.style.colorScheme = theme
+        } catch (e) {
+          /* sin localStorage usamos el tema claro */
+        }
+      })()
+    </script>
   </head>
   <body class="bg-white text-gray-900 dark:bg-brand-dark dark:text-gray-100 antialiased">
     <div id="root"></div>

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import SEOHead from '../components/seo/SEOHead'
 import { asset } from '../utils/assets'
 
@@ -13,7 +13,7 @@ export default function NotFound() {
         noIndex
       />
       <section className="flex flex-1 flex-col items-center justify-center bg-gradient-to-b from-sky-50 to-white px-4 py-24 dark:from-gray-900 dark:to-brand-dark">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -36,7 +36,7 @@ export default function NotFound() {
           >
             Volver al inicio
           </Link>
-        </motion.div>
+        </m.div>
       </section>
     </>
   )

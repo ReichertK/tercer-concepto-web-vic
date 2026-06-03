@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ChevronUp } from 'lucide-react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, m } from 'framer-motion'
 
 export default function BackToTop() {
   const [visible, setVisible] = useState(false)
@@ -14,7 +14,7 @@ export default function BackToTop() {
   return (
     <AnimatePresence>
       {visible && (
-        <motion.button
+        <m.button
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 10 }}
@@ -23,7 +23,7 @@ export default function BackToTop() {
           className="fixed right-4 bottom-4 z-40 rounded-full bg-brand-primary p-3 text-white shadow-medium transition-colors hover:bg-brand-primary-600"
         >
           <ChevronUp size={20} />
-        </motion.button>
+        </m.button>
       )}
     </AnimatePresence>
   )

@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import type { ReactNode } from 'react'
 
 interface AnimatedSectionProps {
@@ -9,7 +9,7 @@ interface AnimatedSectionProps {
 
 export default function AnimatedSection({ children, className = '', delay = 0 }: AnimatedSectionProps) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
@@ -17,6 +17,6 @@ export default function AnimatedSection({ children, className = '', delay = 0 }:
       className={className}
     >
       {children}
-    </motion.div>
+    </m.div>
   )
 }

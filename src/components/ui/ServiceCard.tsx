@@ -16,7 +16,7 @@ export default function ServiceCard({ icon: Icon, title, description, href, link
   return (
     <AnimatedSection delay={delay}>
       <div className="group h-full rounded-xl border border-brand-border bg-white p-6 shadow-soft transition-shadow hover:shadow-medium dark:border-gray-800 dark:bg-gray-900">
-        <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brand-dark text-brand-primary">
+        <div className="mb-4 inline-flex size-12 items-center justify-center rounded-lg bg-brand-primary/10 text-brand-primary dark:bg-brand-dark">
           <Icon size={24} />
         </div>
         <h3 className="mb-2 text-lg font-bold text-gray-900 dark:text-white">{title}</h3>

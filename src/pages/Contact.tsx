@@ -7,8 +7,9 @@ import { asset } from '../utils/assets'
 
 const faqItems = [
   {
-    question: '¿Qué es el Ecosistema PHIRIT y cómo puede ayudar a mi institución?',
-    answer: 'El Ecosistema PHIRIT es un conjunto integrado de módulos (WorkList, PACS, Informes y Portal de Pacientes) que cubren todo el flujo de trabajo de diagnóstico por imágenes. Desde la admisión del paciente hasta la entrega del informe médico, cada paso queda digitalizado y optimizado.',
+    question: '¿Qué es el ecosistema PHIR-IT y cómo puede ayudar a mi institución?',
+    answer:
+      'El ecosistema PHIR-IT es un conjunto integrado de módulos (WorkList, PACS, Informes y Portal de Pacientes) que cubren todo el flujo de trabajo de diagnóstico por imágenes. Desde la admisión del paciente hasta la entrega del informe médico, cada paso queda digitalizado y optimizado.',
   },
   {
     question: '¿Puedo implementar solo algunos módulos del ecosistema?',
@@ -20,7 +21,7 @@ const faqItems = [
   },
   {
     question: '¿Cuáles son las modalidades de implementación disponibles?',
-    answer: 'Ofrecemos implementación In Situ (en sus servidores locales) y Cloud (en la nube, con servidores propios o gestionados por PHIRIT). Ambas opciones se adaptan a las necesidades y presupuesto de cada institución.',
+    answer: 'Ofrecemos implementación In Situ (en sus servidores locales) y Cloud (en la nube, con servidores propios o gestionados por PHIR-IT). Ambas opciones se adaptan a las necesidades y presupuesto de cada institución.',
   },
   {
     question: '¿Es compatible con otros sistemas de gestión de salud (HIS/RIS)?',
@@ -33,7 +34,7 @@ export default function Contact() {
     <>
       <SEOHead
         title="Contacto"
-        description="Contactá a PHIRIT. Resolvemos tus consultas y te acompañamos en la transformación digital de tu institución de salud."
+        description="Contactá a PHIR-IT. Resolvemos tus consultas y te acompañamos en la transformación digital de tu institución de salud."
         path="/contacto"
         image="/img/illustrations/video-call.svg"
       />
@@ -52,7 +53,7 @@ export default function Contact() {
             <AnimatedSection delay={0.15}>
               <img
                 src={asset('/img/illustrations/video-call.svg')}
-                alt="Contacto PHIRIT"
+                alt="Contacto PHIR-IT"
                 className="mx-auto w-full max-w-md"
                 loading="lazy"
                 decoding="async"

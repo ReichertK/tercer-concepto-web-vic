@@ -60,8 +60,8 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="inline-flex items-center gap-2">
-              <img src={asset('/img/logo2.png')} alt="PHIRIT" className="h-10 w-10" />
-              <span className="text-lg font-bold text-gray-900 dark:text-white">PHIRIT</span>
+              <img src={asset('/img/logo2.png')} alt="Logo de PHIR-IT" className="size-10 rounded-lg object-contain" />
+              <span className="text-lg font-bold text-gray-900 dark:text-white">PHIR-IT</span>
             </Link>
             <p className="mt-3 text-sm text-brand-muted dark:text-gray-400">
               Soluciones tecnológicas integrales para el sector salud. Ecosistema completo de gestión de imágenes médicas e informes.
@@ -91,7 +91,7 @@ export default function Footer() {
 
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <p className="text-sm text-brand-muted dark:text-gray-500">
-            &copy; 2026 PHIRIT. Todos los derechos reservados.
+            &copy; 2026 PHIR-IT. Todos los derechos reservados.
           </p>
           <div className="flex gap-3">
             {socialLinks.map((social) => (

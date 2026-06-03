@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, X, Moon, Sun } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { useTheme } from '../../hooks/useTheme'
 import { asset } from '../../utils/assets'
 
@@ -21,8 +21,26 @@ export default function Navbar() {
     <nav className="fixed top-0 inset-x-0 z-50 bg-brand-primary shadow-soft">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          <Link to="/" className="flex shrink-0 items-center gap-2">
-            <img src={asset('/img/logo2.png')} alt="PHIRIT" className="h-12 w-12" />
+          <Link
+            to="/"
+            aria-label="PHIR-IT — Ir al inicio"
+            className="flex shrink-0 items-center gap-2.5 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+          >
+            <img
+              src={asset('/img/logo2.png')}
+              alt="Logo de PHIR-IT"
+              width={48}
+              height={48}
+              className="h-11 w-11 shrink-0 rounded-lg object-contain shadow-sm sm:h-12 sm:w-12"
+            />
+            <span className="flex flex-col leading-none">
+              <span className="text-lg font-extrabold tracking-tight text-white sm:text-xl">
+                PHIR-IT
+              </span>
+              <span className="hidden text-[11px] font-medium tracking-wide text-white/75 sm:block">
+                Soluciones Tecnológicas para Salud
+              </span>
+            </span>
           </Link>
 
           <div className="hidden md:flex md:items-center md:gap-1">
@@ -41,6 +59,7 @@ export default function Navbar() {
             ))}
 
             <button
+              type="button"
               onClick={toggleTheme}
               aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
               className="ml-2 rounded-lg p-2 text-white/85 transition-colors hover:text-white hover:bg-white/10"
@@ -51,6 +70,7 @@ export default function Navbar() {
 
           <div className="flex items-center gap-1 md:hidden">
             <button
+              type="button"
               onClick={toggleTheme}
               aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
               className="rounded-lg p-2 text-white/85 hover:text-white"
@@ -58,6 +78,7 @@ export default function Navbar() {
               {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
             </button>
             <button
+              type="button"
               onClick={() => setMobileOpen((o) => !o)}
               aria-label="Menú de navegación"
               aria-expanded={mobileOpen}
@@ -71,7 +92,7 @@ export default function Navbar() {
 
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
+          <m.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -94,7 +115,7 @@ export default function Navbar() {
                 </Link>
               ))}
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </nav>
