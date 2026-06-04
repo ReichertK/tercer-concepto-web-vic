@@ -52,7 +52,7 @@ export default function Home() {
         subtitle="Digitalizamos el recorrido del paciente de punta a punta: desde la gestión del turno hasta la entrega del informe médico. Soluciones confiables, seguras y pensadas para el día a día del sector salud."
         primaryAction={{ label: 'Ver productos', to: '/productos-servicios' }}
         secondaryAction={{ label: 'Hablar con un asesor', to: '/contacto' }}
-        backgroundImage="/img/fondo-sala-control-pacs-salud.png"
+        backgroundImage="/img/fondo-2-firefly.png"
       />
 
       <section className="bg-white py-16 dark:bg-brand-dark lg:py-24">
