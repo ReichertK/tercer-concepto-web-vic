@@ -20,6 +20,7 @@ const variantStyles = {
   color: {
     nav: 'bg-gradient-to-br from-[#0587dc] to-[#0570be] shadow-soft',
     logo: '/img/logo-letras-negras.png',
+    logoClass: 'rounded-xl',
     wordmark: 'text-white',
     tagline: 'text-white/75',
     focusRing: 'focus-visible:ring-white/70',
@@ -30,6 +31,7 @@ const variantStyles = {
   white: {
     nav: 'bg-[#fcfdfc] shadow-soft border-b border-brand-border dark:border-gray-800 dark:bg-brand-dark',
     logo: '/img/logo-banana.png',
+    logoClass: '',
     wordmark: 'text-gray-900 dark:text-white',
     tagline: 'text-brand-muted dark:text-gray-400',
     focusRing: 'focus-visible:ring-brand-primary',
@@ -60,7 +62,7 @@ export default function Navbar() {
             <img
               src={asset(s.logo)}
               alt="Logo de PHIR-IT"
-              className="h-14 w-auto max-w-[150px] object-contain sm:h-16 sm:max-w-[200px]"
+              className={`h-14 w-auto max-w-[150px] object-contain sm:h-16 sm:max-w-[200px] ${s.logoClass}`}
             />
             <span className="flex flex-col leading-none">
               <span className={`text-xl font-extrabold tracking-tight sm:text-2xl ${s.wordmark}`}>
