@@ -14,9 +14,10 @@ const navLinks = [
 ]
 
 // Estilos de cada opción que estamos evaluando: A (barra con color) y B (barra blanca).
+// Los colores de fondo están igualados al fondo de cada logo para que no contrasten.
 const variantStyles = {
   color: {
-    nav: 'bg-brand-primary shadow-soft',
+    nav: 'bg-[#0684db] shadow-soft',
     logo: '/img/logo-letras-negras.png',
     wordmark: 'text-white',
     tagline: 'text-white/75',
@@ -26,7 +27,7 @@ const variantStyles = {
     iconButton: 'text-white/85 hover:text-white hover:bg-white/10',
   },
   white: {
-    nav: 'bg-white shadow-soft border-b border-brand-border dark:border-gray-800 dark:bg-brand-dark',
+    nav: 'bg-[#fcfdfc] shadow-soft border-b border-brand-border dark:border-gray-800 dark:bg-brand-dark',
     logo: '/img/logo-banana.png',
     wordmark: 'text-gray-900 dark:text-white',
     tagline: 'text-brand-muted dark:text-gray-400',
