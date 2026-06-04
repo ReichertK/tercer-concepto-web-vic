@@ -21,8 +21,6 @@ const variantStyles = {
     nav: 'bg-gradient-to-br from-[#0587dc] to-[#0570be] shadow-soft',
     logo: '/img/logo-letras-negras.png',
     logoClass: 'rounded-full',
-    wordmark: 'text-white',
-    tagline: 'text-white/75',
     focusRing: 'focus-visible:ring-white/70',
     linkActive: 'text-white bg-white/15',
     linkIdle: 'text-white/85 hover:text-white hover:bg-white/10',
@@ -32,8 +30,6 @@ const variantStyles = {
     nav: 'bg-[#fcfdfc] shadow-soft border-b border-brand-border dark:border-gray-800 dark:bg-brand-dark',
     logo: '/img/logo-banana.png',
     logoClass: '',
-    wordmark: 'text-gray-900 dark:text-white',
-    tagline: 'text-brand-muted dark:text-gray-400',
     focusRing: 'focus-visible:ring-brand-primary',
     linkActive: 'text-brand-primary bg-brand-primary/10',
     linkIdle:
@@ -64,14 +60,6 @@ export default function Navbar() {
               alt="Logo de PHIR-IT"
               className={`h-12 w-auto max-w-[200px] object-contain sm:h-14 sm:max-w-[260px] ${s.logoClass}`}
             />
-            <span className="flex flex-col leading-none">
-              <span className={`text-xl font-extrabold tracking-tight sm:text-2xl ${s.wordmark}`}>
-                PHIR-IT
-              </span>
-              <span className={`hidden text-xs font-medium tracking-wide sm:block ${s.tagline}`}>
-                Soluciones Tecnológicas para Salud
-              </span>
-            </span>
           </Link>
 
           <div className="hidden md:flex md:items-center md:gap-1">
