@@ -18,6 +18,8 @@ const variantStyles = {
   color: {
     nav: 'bg-brand-primary shadow-soft',
     logo: '/img/logo-letras-negras.png',
+    wordmark: 'text-white',
+    tagline: 'text-white/75',
     focusRing: 'focus-visible:ring-white/70',
     linkActive: 'text-white bg-white/15',
     linkIdle: 'text-white/85 hover:text-white hover:bg-white/10',
@@ -26,6 +28,8 @@ const variantStyles = {
   white: {
     nav: 'bg-white shadow-soft border-b border-brand-border dark:border-gray-800 dark:bg-brand-dark',
     logo: '/img/logo-banana.png',
+    wordmark: 'text-gray-900 dark:text-white',
+    tagline: 'text-brand-muted dark:text-gray-400',
     focusRing: 'focus-visible:ring-brand-primary',
     linkActive: 'text-brand-primary bg-brand-primary/10',
     linkIdle:
@@ -45,17 +49,25 @@ export default function Navbar() {
   return (
     <nav className={`fixed top-0 inset-x-0 z-50 ${s.nav}`}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-20 items-center justify-between">
           <Link
             to="/"
             aria-label="PHIR-IT — Ir al inicio"
-            className={`flex shrink-0 items-center rounded-lg focus-visible:outline-none focus-visible:ring-2 ${s.focusRing}`}
+            className={`flex shrink-0 items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 ${s.focusRing}`}
           >
             <img
               src={asset(s.logo)}
-              alt="PHIR-IT — Soluciones Tecnológicas para Salud"
-              className="h-10 w-auto max-w-[180px] object-contain sm:h-12 sm:max-w-[230px]"
+              alt="Logo de PHIR-IT"
+              className="h-14 w-auto max-w-[150px] object-contain sm:h-16 sm:max-w-[200px]"
             />
+            <span className="flex flex-col leading-none">
+              <span className={`text-xl font-extrabold tracking-tight sm:text-2xl ${s.wordmark}`}>
+                PHIR-IT
+              </span>
+              <span className={`hidden text-xs font-medium tracking-wide sm:block ${s.tagline}`}>
+                Soluciones Tecnológicas para Salud
+              </span>
+            </span>
           </Link>
 
           <div className="hidden md:flex md:items-center md:gap-1">
