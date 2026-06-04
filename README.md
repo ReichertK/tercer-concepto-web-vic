@@ -99,7 +99,7 @@ ruta correcta tanto en desarrollo como en producción.
 > guiones. Por ejemplo, la imagen de fondo del Hero se llama:
 >
 > ```text
-> public/img/fondo-sala-control-pacs-salud.png
+> public/img/fondo-sala-control.png
 > ```
 >
 > El componente `Hero` ya apunta a esa ruta mediante la prop `backgroundImage`.
