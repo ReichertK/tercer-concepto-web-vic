@@ -14,10 +14,11 @@ const navLinks = [
 ]
 
 // Estilos de cada opción que estamos evaluando: A (barra con color) y B (barra blanca).
-// Los colores de fondo están igualados al fondo de cada logo para que no contrasten.
+// El logo A tiene un degradado azul diagonal (claro arriba-izq → oscuro abajo-der);
+// la barra usa el mismo degradado para que el logo se funda sin recuadro visible.
 const variantStyles = {
   color: {
-    nav: 'bg-[#0684db] shadow-soft',
+    nav: 'bg-gradient-to-br from-[#0587dc] to-[#0570be] shadow-soft',
     logo: '/img/logo-letras-negras.png',
     wordmark: 'text-white',
     tagline: 'text-white/75',
