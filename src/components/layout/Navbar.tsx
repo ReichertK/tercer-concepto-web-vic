@@ -62,7 +62,7 @@ export default function Navbar() {
             <img
               src={asset(s.logo)}
               alt="Logo de PHIR-IT"
-              className={`h-14 w-auto max-w-[150px] object-contain sm:h-16 sm:max-w-[200px] ${s.logoClass}`}
+              className={`h-16 w-auto max-w-[180px] object-contain sm:h-[4.5rem] sm:max-w-[240px] ${s.logoClass}`}
             />
             <span className="flex flex-col leading-none">
               <span className={`text-xl font-extrabold tracking-tight sm:text-2xl ${s.wordmark}`}>
