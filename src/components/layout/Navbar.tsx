@@ -53,7 +53,7 @@ export default function Navbar() {
   return (
     <nav className={`fixed top-0 inset-x-0 z-50 ${s.nav}`}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between">
+        <div className="flex h-24 items-center justify-between">
           <Link
             to="/"
             aria-label="PHIR-IT — Ir al inicio"
@@ -62,7 +62,7 @@ export default function Navbar() {
             <img
               src={asset(s.logo)}
               alt="Logo de PHIR-IT"
-              className={`h-[4.5rem] w-auto max-w-[200px] object-contain sm:h-20 sm:max-w-[280px] ${s.logoClass}`}
+              className={`h-20 w-auto max-w-[220px] object-contain sm:h-[5.5rem] sm:max-w-[320px] ${s.logoClass}`}
             />
             <span className="flex flex-col leading-none">
               <span className={`text-xl font-extrabold tracking-tight sm:text-2xl ${s.wordmark}`}>
