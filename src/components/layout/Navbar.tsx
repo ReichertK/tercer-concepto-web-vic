@@ -20,7 +20,7 @@ const variantStyles = {
   color: {
     nav: 'bg-gradient-to-br from-[#0587dc] to-[#0570be] shadow-soft',
     logo: '/img/logo-letras-negras.png',
-    logoClass: 'rounded-xl',
+    logoClass: 'rounded-full',
     wordmark: 'text-white',
     tagline: 'text-white/75',
     focusRing: 'focus-visible:ring-white/70',
