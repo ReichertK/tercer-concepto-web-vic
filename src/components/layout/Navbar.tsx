@@ -20,7 +20,7 @@ const variantStyles = {
   color: {
     nav: 'bg-gradient-to-br from-[#0587dc] to-[#0570be] shadow-soft',
     logo: '/img/logo-letras-negras.png',
-    logoClass: 'rounded-full',
+    logoClass: 'h-12 max-w-[200px] sm:h-14 sm:max-w-[260px] rounded-full',
     focusRing: 'focus-visible:ring-white/70',
     linkActive: 'text-white bg-white/15',
     linkIdle: 'text-white/85 hover:text-white hover:bg-white/10',
@@ -29,7 +29,7 @@ const variantStyles = {
   white: {
     nav: 'bg-[#fcfdfc] shadow-soft border-b border-brand-border dark:border-gray-800 dark:bg-brand-dark',
     logo: '/img/logo-banana.png',
-    logoClass: '',
+    logoClass: 'h-16 max-w-[260px] sm:h-[4.5rem] sm:max-w-[340px]',
     focusRing: 'focus-visible:ring-brand-primary',
     linkActive: 'text-brand-primary bg-brand-primary/10',
     linkIdle:
@@ -58,7 +58,7 @@ export default function Navbar() {
             <img
               src={asset(s.logo)}
               alt="Logo de PHIR-IT"
-              className={`h-12 w-auto max-w-[200px] object-contain sm:h-14 sm:max-w-[260px] ${s.logoClass}`}
+              className={`w-auto object-contain ${s.logoClass}`}
             />
           </Link>
 
