@@ -58,17 +58,24 @@ export default function Home() {
       <section className="bg-white py-16 dark:bg-brand-dark lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-16 lg:gap-24">
-            {carteles.map((cartel) => (
+            {carteles.map((cartel, i) => (
               <AnimatedSection key={cartel.title}>
                 <div className="grid items-stretch gap-10 lg:grid-cols-2 lg:gap-16">
-                  <img
-                    src={asset(cartel.image)}
-                    alt={cartel.alt}
-                    className="w-full rounded-2xl shadow-soft lg:h-full lg:object-cover"
-                    loading="lazy"
-                    decoding="async"
-                  />
+                  <div
+                    className={`group overflow-hidden rounded-2xl shadow-soft ring-1 ring-black/5 dark:ring-white/10 ${
+                      i % 2 === 1 ? 'lg:order-2' : ''
+                    }`}
+                  >
+                    <img
+                      src={asset(cartel.image)}
+                      alt={cartel.alt}
+                      className="w-full transition-transform duration-500 ease-out group-hover:scale-[1.03] lg:h-full lg:object-cover"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
                   <div className="flex flex-col justify-center">
+                    <span className="mb-5 h-1 w-12 rounded-full bg-brand-primary" />
                     <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">
                       {cartel.title}
                     </h2>
