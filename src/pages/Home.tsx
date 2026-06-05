@@ -1,35 +1,35 @@
 import { Link } from 'react-router-dom'
-import { Monitor, HeartPulse, Wrench } from 'lucide-react'
 import SEOHead from '../components/seo/SEOHead'
 import Hero from '../components/ui/Hero'
-import ServiceCard from '../components/ui/ServiceCard'
 import AnimatedSection from '../components/ui/AnimatedSection'
 import { asset } from '../utils/assets'
 
-const features = [
+const carteles = [
   {
-    icon: Monitor,
-    title: 'Plataforma 100% web',
-    description:
-      'Acceda a cada módulo desde el navegador, sin instalaciones complejas. Compatible con entornos Windows y Linux, y operativo en cualquier puesto de trabajo de la institución.',
-    href: '/productos-servicios',
-    linkText: 'Conocer la plataforma',
+    image: '/img/cartel-1.png',
+    alt: 'Plataforma web de PHIR-IT accesible desde múltiples dispositivos',
+    title: 'Plataforma 100% web, en cualquier dispositivo',
+    paragraphs: [
+      'Acceda a cada módulo desde cualquier navegador y sistema operativo, sin necesidad de instalar complementos o plugins. Además, la plataforma es completamente responsive, lo que permite su visualización desde cualquier dispositivo y ubicación, ya sea desde un puesto de trabajo dentro de la institución o desde el exterior.',
+    ],
   },
   {
-    icon: HeartPulse,
-    title: 'Especialistas en salud',
-    description:
-      'Más de una década acompañando a clínicas y centros de diagnóstico. Conocemos los flujos clínicos reales y construimos soluciones que el equipo médico adopta sin fricción.',
-    href: '/casos-exito',
-    linkText: 'Ver casos de éxito',
+    image: '/img/cartel-2.jpg',
+    alt: 'Equipo de PHIR-IT especializado en tecnología para el sector salud',
+    title: 'Más de una década acompañando a clínicas y centros de diagnóstico',
+    paragraphs: [
+      'Contamos con una sólida trayectoria en el sector salud, respaldada por profesionales con más de 30 años de experiencia en tecnologías para modalidades de diagnóstico por imágenes, sistemas PACS y soluciones de gestión sanitaria.',
+      'Conocemos en profundidad los flujos de trabajo de clínicas, hospitales y centros de diagnóstico, lo que nos permite diseñar, desarrollar y adaptar soluciones tecnológicas alineadas con los estándares del mercado. Nuestro objetivo es optimizar los procesos asistenciales, mejorar la eficiencia operativa y elevar la calidad del servicio brindado por cada institución.',
+      'Desarrollamos soluciones intuitivas, amigables y orientadas a las necesidades reales de los equipos médicos. Gracias a su diseño centrado en el usuario y a su adaptación natural a los procesos de trabajo existentes, nuestros sistemas logran una rápida adopción, minimizando los tiempos de capacitación y maximizando los beneficios desde el primer día.',
+    ],
   },
   {
-    icon: Wrench,
-    title: 'Desarrollo a medida',
-    description:
-      'Software propio y modular que se adapta a la operación de cada institución. Crecemos junto a su negocio, integrando nuevas prestaciones a medida que las necesita.',
-    href: '/productos-servicios',
-    linkText: 'Solicitar una propuesta',
+    image: '/img/cartel-3.png',
+    alt: 'Software modular de PHIR-IT que escala con la institución',
+    title: 'Software modular que impulsa su crecimiento',
+    paragraphs: [
+      'Se adapta a su operación hoy y escala con usted mañana. Integramos nuevas prestaciones cuando su negocio las demanda.',
+    ],
   },
 ]
 
@@ -57,9 +57,29 @@ export default function Home() {
 
       <section className="bg-white py-16 dark:bg-brand-dark lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {features.map((feat, i) => (
-              <ServiceCard key={feat.title} {...feat} delay={i * 0.1} />
+          <div className="flex flex-col gap-16 lg:gap-24">
+            {carteles.map((cartel) => (
+              <AnimatedSection key={cartel.title}>
+                <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+                  <img
+                    src={asset(cartel.image)}
+                    alt={cartel.alt}
+                    className="w-full rounded-2xl shadow-soft"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div>
+                    <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">
+                      {cartel.title}
+                    </h2>
+                    <div className="mt-4 space-y-4 text-brand-muted dark:text-gray-400">
+                      {cartel.paragraphs.map((parrafo) => (
+                        <p key={parrafo.slice(0, 40)}>{parrafo}</p>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </AnimatedSection>
             ))}
           </div>
         </div>
