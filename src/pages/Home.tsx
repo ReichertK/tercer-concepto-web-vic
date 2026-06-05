@@ -6,7 +6,7 @@ import { asset } from '../utils/assets'
 
 const carteles = [
   {
-    image: '/img/cartel-1.png',
+    image: '/img/cartel1.png',
     alt: 'Plataforma web de PHIR-IT accesible desde múltiples dispositivos',
     title: 'Plataforma 100% web, en cualquier dispositivo',
     paragraphs: [
@@ -14,7 +14,7 @@ const carteles = [
     ],
   },
   {
-    image: '/img/cartel-2.jpg',
+    image: '/img/cartel2.png',
     alt: 'Equipo de PHIR-IT especializado en tecnología para el sector salud',
     title: 'Más de una década acompañando a clínicas y centros de diagnóstico',
     paragraphs: [
@@ -24,7 +24,7 @@ const carteles = [
     ],
   },
   {
-    image: '/img/cartel-3.png',
+    image: '/img/Cartel3.png',
     alt: 'Software modular de PHIR-IT que escala con la institución',
     title: 'Software modular que impulsa su crecimiento',
     paragraphs: [
