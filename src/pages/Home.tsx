@@ -60,15 +60,15 @@ export default function Home() {
           <div className="flex flex-col gap-16 lg:gap-24">
             {carteles.map((cartel) => (
               <AnimatedSection key={cartel.title}>
-                <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+                <div className="grid items-stretch gap-10 lg:grid-cols-2 lg:gap-16">
                   <img
                     src={asset(cartel.image)}
                     alt={cartel.alt}
-                    className="w-full rounded-2xl shadow-soft"
+                    className="w-full rounded-2xl shadow-soft lg:h-full lg:object-cover"
                     loading="lazy"
                     decoding="async"
                   />
-                  <div>
+                  <div className="flex flex-col justify-center">
                     <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">
                       {cartel.title}
                     </h2>
