@@ -29,7 +29,12 @@ const variantStyles = {
   white: {
     nav: 'bg-[#fcfdfc] shadow-soft border-b border-brand-border dark:border-gray-800 dark:bg-brand-dark',
     logo: '/img/logo-banana.png',
-    logoClass: 'h-16 max-w-[260px] sm:h-[4.5rem] sm:max-w-[340px]',
+    // En modo oscuro invertimos la luminosidad del logo (fondo blanco → casi negro,
+    // texto oscuro → claro) y giramos el tono 180° para conservar el azul. El
+    // contrast(0.86) evita que el blanco caiga a negro puro y lo acerca al
+    // #12141a de la barra (brand-dark), para que se funda sin recuadro visible.
+    logoClass:
+      'h-16 max-w-[260px] sm:h-[4.5rem] sm:max-w-[340px] transition-[filter] dark:[filter:invert(1)_hue-rotate(180deg)_contrast(0.86)]',
     focusRing: 'focus-visible:ring-brand-primary',
     linkActive: 'text-brand-primary bg-brand-primary/10',
     linkIdle:
