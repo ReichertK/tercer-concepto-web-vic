@@ -31,6 +31,12 @@ type ContactFormData = z.infer<typeof contactSchema>
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error'
 
+// Clave pública de Web3Forms (es segura para exponer en el front). Se genera
+// gratis en https://web3forms.com con el correo info@phir-it.ar, que es la
+// casilla donde llegan los mensajes del formulario. Pegá la clave acá abajo.
+const WEB3FORMS_ACCESS_KEY =
+  import.meta.env.VITE_WEB3FORMS_KEY ?? 'PEGAR_AQUI_LA_CLAVE_DE_WEB3FORMS'
+
 export default function ContactForm() {
   const [status, setStatus] = useState<FormStatus>('idle')
 
@@ -47,16 +53,30 @@ export default function ContactForm() {
   const onSubmit = async (data: ContactFormData) => {
     setStatus('submitting')
     try {
-      // Simulamos el envío mientras no hay backend conectado.
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-      console.info('Datos validados y listos para enviar:', data)
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: 'Nueva consulta desde la web de PHIR-IT',
+          from_name: 'Web PHIR-IT',
+          name: data.name,
+          email: data.email,
+          message: data.message,
+        }),
+      })
 
-      // Para conectar el backend, reemplazar la línea de arriba por un fetch
-      // o axios al endpoint definido en import.meta.env.VITE_CONTACT_ENDPOINT.
-      // Ver el README para el detalle.
+      const result = await res.json()
 
-      setStatus('success')
-      reset()
+      if (result.success) {
+        setStatus('success')
+        reset()
+      } else {
+        setStatus('error')
+      }
     } catch {
       setStatus('error')
     }

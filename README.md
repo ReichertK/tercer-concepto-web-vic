@@ -108,71 +108,45 @@ ruta correcta tanto en desarrollo como en producción.
 
 ---
 
-## A) Guía de integración del formulario de contacto
+## A) Formulario de contacto (Web3Forms)
 
-El formulario (`src/components/ui/ContactForm.tsx`) ya está **100% preparado en el
-frontend**: valida los datos, muestra estados de carga y de éxito, y entrega un
-objeto `data` limpio y tipado. Solo resta conectar el envío al backend.
+El formulario (`src/components/ui/ContactForm.tsx`) ya está **conectado y
+funcionando**: valida los datos, muestra estados de carga/éxito/error y envía
+cada consulta por correo a **info@phir-it.ar** a través de
+[Web3Forms](https://web3forms.com) (un servicio gratuito que no necesita
+servidor propio ni backend).
 
-### Paso 1 — Definir el endpoint en una variable de entorno
+### Único paso pendiente — Generar la clave de acceso
 
-Creá un archivo `.env` en la raíz del proyecto (no lo subas al repositorio):
+La clave debe crearse desde la casilla **info@phir-it.ar**, porque ahí es donde
+llegarán los mensajes:
 
-```bash
-# .env
-VITE_CONTACT_ENDPOINT=https://api.tudominio.com/contacto
-```
-
-> En Vite, las variables expuestas al frontend **deben** comenzar con el prefijo
-> `VITE_`. Se acceden con `import.meta.env.VITE_CONTACT_ENDPOINT`.
-
-### Paso 2 — Conectar el envío
-
-Dentro de la función `onSubmit` ya está la estructura comentada. Eliminá la línea
-de simulación (`await new Promise(...)`) y descomentá una de estas dos opciones:
-
-**Opción A — `fetch` nativo (sin dependencias adicionales):**
+1. Entrar a <https://web3forms.com> y poner el correo **info@phir-it.ar**.
+2. Abrir el mail que envía Web3Forms a esa casilla y copiar la **Access Key**
+   (es una clave pública, no es una contraseña).
+3. Pegar esa clave en `src/components/ui/ContactForm.tsx`, reemplazando el texto
+   `PEGAR_AQUI_LA_CLAVE_DE_WEB3FORMS`:
 
 ```ts
-const onSubmit = async (data: ContactFormData) => {
-  setStatus('submitting')
-  try {
-    const res = await fetch(import.meta.env.VITE_CONTACT_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    })
-
-    if (!res.ok) throw new Error(`Error ${res.status}`)
-
-    setStatus('success')
-    reset()
-  } catch {
-    setStatus('error')
-  }
-}
+const WEB3FORMS_ACCESS_KEY =
+  import.meta.env.VITE_WEB3FORMS_KEY ?? 'a1b2c3d4-0000-0000-0000-xxxxxxxxxxxx'
 ```
 
-**Opción B — `axios` (instalar con `npm i axios`):**
+4. Guardar, hacer commit y push. El deploy automático deja el formulario
+   enviando mails de verdad.
 
-```ts
-import axios from 'axios'
+> La clave es **pública por diseño** (Web3Forms la pensó para vivir en el
+> frontend), así que no hay problema en dejarla en el código. Si se prefiere no
+> tenerla en el repositorio, se puede definir como variable de entorno
+> `VITE_WEB3FORMS_KEY` en el build.
 
-const onSubmit = async (data: ContactFormData) => {
-  setStatus('submitting')
-  try {
-    await axios.post(import.meta.env.VITE_CONTACT_ENDPOINT, data)
-    setStatus('success')
-    reset()
-  } catch {
-    setStatus('error')
-  }
-}
-```
+### A dónde llegan los mensajes
 
-### Paso 3 — Formato de los datos enviados
+Cada envío llega como un mail a **info@phir-it.ar** con el nombre, el correo y el
+mensaje de quien completó el formulario. El plan gratuito permite hasta 250
+envíos por mes; si se necesitara más, Web3Forms ofrece planes pagos.
 
-El backend recibirá un JSON con esta forma (ya validado en el frontend):
+### Formato del mensaje
 
 ```json
 {
@@ -181,16 +155,6 @@ El backend recibirá un JSON con esta forma (ya validado en el frontend):
   "message": "Quisiera una demo del ecosistema PHIR-IT."
 }
 ```
-
-### Recomendaciones para el equipo de backend
-
-- **Validar nuevamente del lado del servidor.** La validación del frontend mejora la
-  experiencia, pero **nunca** reemplaza la validación en el backend.
-- **Protección anti-spam:** sumar un honeypot, reCAPTCHA o límite de envíos por IP.
-- **CORS:** habilitar el dominio del sitio en la configuración del servidor para que
-  el navegador permita la petición.
-- **Respuesta esperada:** devolver un código `2xx` ante el éxito. Cualquier otro
-  código activará automáticamente el estado de error en el formulario.
 
 ---
 
