@@ -37,7 +37,7 @@ export default function Contact() {
         title="Contacto"
         description="Contactá a PHIR-IT. Resolvemos tus consultas y te acompañamos en la transformación digital de tu institución de salud."
         path="/contacto"
-        image="/img/illustrations/video-call.svg"
+        image="/img/fondo-sala-control.png"
       />
 
       <section className="relative overflow-hidden bg-brand-dark pt-24 pb-16 lg:pt-32 lg:pb-24">
@@ -66,20 +66,11 @@ export default function Contact() {
               info@phir-it.ar
             </a>
           </div>
-          <div className="mx-auto mt-12 grid max-w-5xl items-start gap-12 lg:grid-cols-2">
+          <div className="mx-auto mt-12 max-w-2xl">
             <AnimatedSection>
-              <div className="rounded-2xl bg-white p-6 shadow-medium dark:bg-gray-900 sm:p-8">
+              <div className="rounded-2xl bg-white p-6 shadow-medium ring-1 ring-black/5 dark:bg-gray-900 dark:ring-white/10 sm:p-8">
                 <ContactForm />
               </div>
-            </AnimatedSection>
-            <AnimatedSection delay={0.15}>
-              <img
-                src={asset('/img/illustrations/video-call.svg')}
-                alt="Contacto PHIR-IT"
-                className="mx-auto w-full max-w-md"
-                loading="lazy"
-                decoding="async"
-              />
             </AnimatedSection>
           </div>
         </div>

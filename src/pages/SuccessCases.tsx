@@ -1,6 +1,7 @@
 import { Hospital, Building2, ClipboardPlus, Network, FileHeart, MonitorSmartphone } from 'lucide-react'
 import SEOHead from '../components/seo/SEOHead'
 import Hero from '../components/ui/Hero'
+import SectionHeading from '../components/ui/SectionHeading'
 import CaseCard from '../components/ui/CaseCard'
 
 const cases = [
@@ -43,7 +44,7 @@ export default function SuccessCases() {
         title="Casos de Éxito"
         description="Conocé casos de éxito de instituciones de salud que optimizaron sus procesos con el Ecosistema PHIRIT."
         path="/casos-exito"
-        image="/img/illustrations/ranking.svg"
+        image="/img/casos-exito.png"
       />
 
       <Hero
@@ -54,11 +55,17 @@ export default function SuccessCases() {
         }
         subtitle="Descubrí cómo hemos ayudado a diversas instituciones de salud a optimizar sus procesos con nuestras soluciones tecnológicas."
         image={{ src: '/img/casos-exito.png', alt: 'Casos de éxito de PHIR-IT' }}
+        zoomableImage
         plainBackground
       />
 
       <section className="bg-white py-16 dark:bg-brand-dark lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeading
+            title="Instituciones que confían en PHIR-IT"
+            highlight="confían"
+            subtitle="Centros de diagnóstico, clínicas y hospitales que ya digitalizaron su flujo de trabajo con nuestro ecosistema."
+          />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {cases.map((item, i) => (
               <CaseCard key={item.title} {...item} delay={i * 0.08} />

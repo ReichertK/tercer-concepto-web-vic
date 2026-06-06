@@ -2,6 +2,7 @@ import SEOHead from '../components/seo/SEOHead'
 import Hero from '../components/ui/Hero'
 import SectionHeading from '../components/ui/SectionHeading'
 import AnimatedSection from '../components/ui/AnimatedSection'
+import Lightbox from '../components/ui/Lightbox'
 import { asset } from '../utils/assets'
 
 interface ProductCard {
@@ -78,13 +79,13 @@ const products: ProductCard[] = [
 function ProductEntry({ product, delay }: { product: ProductCard; delay: number }) {
   return (
     <AnimatedSection delay={delay}>
-      <div className="flex h-full flex-col rounded-xl border border-brand-border bg-white p-6 shadow-soft transition-shadow hover:shadow-medium dark:border-gray-800 dark:bg-gray-900">
+      <div className="group flex h-full flex-col rounded-xl border border-brand-border bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium dark:border-gray-800 dark:bg-gray-900">
         <img
           src={asset(product.image)}
           alt={product.title}
           width={112}
           height={112}
-          className="mb-4 size-28 self-center object-contain"
+          className="mb-4 size-28 self-center object-contain transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
           decoding="async"
         />
@@ -152,13 +153,11 @@ export default function ProductsServices() {
           />
           <div className="mx-auto grid max-w-3xl gap-6 md:grid-cols-2">
             <AnimatedSection>
-              <div className="flex h-full flex-col items-center rounded-xl border border-brand-border bg-white p-8 text-center shadow-soft dark:border-gray-800 dark:bg-gray-900">
-                <img
+              <div className="flex h-full flex-col items-center rounded-xl border border-brand-border bg-white p-8 text-center shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium dark:border-gray-800 dark:bg-gray-900">
+                <Lightbox
                   src={asset('/img/data-center-insitu.png')}
                   alt="Implementación In Situ de PHIR-IT"
-                  className="mb-4 h-32 w-full object-contain"
-                  loading="lazy"
-                  decoding="async"
+                  className="mb-4 h-32 w-full"
                 />
                 <h3 className="mb-2 text-lg font-bold text-gray-900 dark:text-white">In Situ</h3>
                 <p className="text-sm text-brand-muted dark:text-gray-400">
@@ -167,13 +166,11 @@ export default function ProductsServices() {
               </div>
             </AnimatedSection>
             <AnimatedSection delay={0.1}>
-              <div className="flex h-full flex-col items-center rounded-xl border border-brand-border bg-white p-8 text-center shadow-soft dark:border-gray-800 dark:bg-gray-900">
-                <img
+              <div className="flex h-full flex-col items-center rounded-xl border border-brand-border bg-white p-8 text-center shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium dark:border-gray-800 dark:bg-gray-900">
+                <Lightbox
                   src={asset('/img/estructura-cloud.png')}
                   alt="Solución Cloud de PHIR-IT"
-                  className="mb-4 h-32 w-full object-contain"
-                  loading="lazy"
-                  decoding="async"
+                  className="mb-4 h-32 w-full"
                 />
                 <h3 className="mb-2 text-lg font-bold text-gray-900 dark:text-white">Cloud</h3>
                 <p className="text-sm text-brand-muted dark:text-gray-400">

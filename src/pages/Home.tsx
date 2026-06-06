@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import SEOHead from '../components/seo/SEOHead'
 import Hero from '../components/ui/Hero'
 import AnimatedSection from '../components/ui/AnimatedSection'
+import Lightbox from '../components/ui/Lightbox'
 import { asset } from '../utils/assets'
 
 const carteles = [
@@ -96,15 +97,14 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <AnimatedSection>
-              <img
-                src={asset('/img/illustrations/presentation-2.svg')}
-                alt="Presentación del ecosistema"
-                className="w-full max-w-md mx-auto"
-                loading="lazy"
-                decoding="async"
+              <Lightbox
+                src={asset('/img/phir-it-ecosistema.png')}
+                alt="Diagrama del ecosistema PHIR-IT"
+                className="mx-auto w-full max-w-md"
               />
             </AnimatedSection>
             <AnimatedSection delay={0.15}>
+              <span className="mb-5 inline-block h-1 w-12 rounded-full bg-brand-primary" />
               <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">
                 El ecosistema PHIR-IT
               </h2>

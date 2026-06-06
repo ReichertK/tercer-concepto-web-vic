@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { m } from 'framer-motion'
 import SEOHead from '../components/seo/SEOHead'
-import { asset } from '../utils/assets'
 
 export default function NotFound() {
   return (
@@ -19,12 +18,11 @@ export default function NotFound() {
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <img
-            src={asset('/img/illustrations/404.svg')}
-            alt="Página no encontrada"
-            className="mx-auto mb-8 w-full max-w-md"
-          />
-          <h1 className="mb-4 text-4xl font-bold text-gray-900 dark:text-white sm:text-5xl">
+          <p className="bg-gradient-to-b from-brand-primary to-brand-primary-600 bg-clip-text text-[7rem] font-extrabold leading-none tracking-tight text-transparent drop-shadow-sm sm:text-[10rem]">
+            404
+          </p>
+          <span className="mx-auto mb-6 mt-2 block h-1 w-16 rounded-full bg-brand-primary" />
+          <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl">
             Página no encontrada
           </h1>
           <p className="mb-8 text-lg text-brand-muted dark:text-gray-400">
