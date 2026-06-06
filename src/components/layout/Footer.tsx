@@ -26,7 +26,7 @@ const footerSections = [
       { label: 'PhirITWorkList', href: '/productos-servicios#ecosistema' },
       { label: 'PhirITPacs', href: '/productos-servicios#ecosistema' },
       { label: 'PhirITInformes', href: '/productos-servicios#ecosistema' },
-      { label: 'Portal de Pacientes', href: '/productos-servicios#adicionales' },
+      { label: 'Portal de Pacientes', href: '/productos-servicios#ecosistema' },
     ],
   },
   {

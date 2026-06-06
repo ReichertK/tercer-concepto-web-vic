@@ -1,3 +1,4 @@
+import { Mail } from 'lucide-react'
 import SEOHead from '../components/seo/SEOHead'
 import SectionHeading from '../components/ui/SectionHeading'
 import ContactForm from '../components/ui/ContactForm'
@@ -39,16 +40,37 @@ export default function Contact() {
         image="/img/illustrations/video-call.svg"
       />
 
-      <section className="bg-gradient-to-b from-sky-50 via-white to-white pt-24 pb-16 dark:from-gray-900 dark:via-brand-dark dark:to-brand-dark lg:pt-32 lg:pb-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeading
-            title="¿Tenés alguna consulta?"
-            highlight="consulta"
-            subtitle="Nuestro equipo está para ayudarte. Envianos un mensaje y te respondemos a la brevedad."
-          />
-          <div className="mx-auto grid max-w-5xl items-start gap-12 lg:grid-cols-2">
+      <section className="relative overflow-hidden bg-brand-dark pt-24 pb-16 lg:pt-32 lg:pb-24">
+        <img
+          src={asset('/img/fondo-sala-control.png')}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+          loading="eager"
+          decoding="async"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-dark/95 via-brand-dark/85 to-brand-dark/70" />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <h1 className="text-3xl font-bold tracking-tight text-white drop-shadow-sm sm:text-4xl">
+              ¿Tenés alguna <span className="text-highlight">consulta</span>?
+            </h1>
+            <p className="mt-4 text-lg text-gray-100/90">
+              Nuestro equipo está para ayudarte. Envianos un mensaje y te respondemos a la brevedad.
+            </p>
+            <a
+              href="mailto:info@phir-it.ar"
+              className="mt-6 inline-flex items-center gap-2 rounded-xl border border-white/40 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white hover:text-brand-dark"
+            >
+              <Mail size={18} />
+              info@phir-it.ar
+            </a>
+          </div>
+          <div className="mx-auto mt-12 grid max-w-5xl items-start gap-12 lg:grid-cols-2">
             <AnimatedSection>
-              <ContactForm />
+              <div className="rounded-2xl bg-white p-6 shadow-medium dark:bg-gray-900 sm:p-8">
+                <ContactForm />
+              </div>
             </AnimatedSection>
             <AnimatedSection delay={0.15}>
               <img

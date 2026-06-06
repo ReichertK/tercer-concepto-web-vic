@@ -12,6 +12,8 @@ interface HeroProps {
   image?: { src: string; alt: string }
   // Permite ampliar la imagen al hacer clic (Lightbox).
   zoomableImage?: boolean
+  // Fondo blanco liso en lugar del degradado celeste.
+  plainBackground?: boolean
   // Imagen de fondo a pantalla completa con overlay oscuro. Si se define, el
   // texto del Hero pasa a blanco. Ruta relativa a /public.
   backgroundImage?: string
@@ -24,6 +26,7 @@ export default function Hero({
   secondaryAction,
   image,
   zoomableImage,
+  plainBackground,
   backgroundImage,
 }: HeroProps) {
   const hasBg = Boolean(backgroundImage)
@@ -33,7 +36,9 @@ export default function Hero({
       className={
         hasBg
           ? 'relative overflow-hidden bg-brand-dark'
-          : 'relative overflow-hidden bg-gradient-to-b from-sky-50 via-white to-white dark:from-gray-900 dark:via-brand-dark dark:to-brand-dark'
+          : plainBackground
+            ? 'relative overflow-hidden bg-white dark:bg-brand-dark'
+            : 'relative overflow-hidden bg-gradient-to-b from-sky-50 via-white to-white dark:from-gray-900 dark:via-brand-dark dark:to-brand-dark'
       }
     >
       {hasBg ? (
@@ -53,8 +58,12 @@ export default function Hero({
         </>
       ) : (
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-24 right-[10%] h-[600px] w-[1200px] rounded-full bg-brand-primary/10 blur-3xl dark:bg-brand-primary/5" />
-          <div className="absolute -top-32 left-[5%] h-[480px] w-[900px] rounded-full bg-brand-accent/8 blur-3xl dark:bg-brand-accent/3" />
+          {!plainBackground && (
+            <>
+              <div className="absolute -top-24 right-[10%] h-[600px] w-[1200px] rounded-full bg-brand-primary/10 blur-3xl dark:bg-brand-primary/5" />
+              <div className="absolute -top-32 left-[5%] h-[480px] w-[900px] rounded-full bg-brand-accent/8 blur-3xl dark:bg-brand-accent/3" />
+            </>
+          )}
         </div>
       )}
 

@@ -1,4 +1,3 @@
-import { Building2, Cloud } from 'lucide-react'
 import SEOHead from '../components/seo/SEOHead'
 import Hero from '../components/ui/Hero'
 import SectionHeading from '../components/ui/SectionHeading'
@@ -12,7 +11,7 @@ interface ProductCard {
   features: string[]
 }
 
-const ecosystemProducts: ProductCard[] = [
+const products: ProductCard[] = [
   {
     image: '/img/phir-worklist.png',
     title: 'PhirITWorkList',
@@ -44,9 +43,6 @@ const ecosystemProducts: ProductCard[] = [
       'Gestión de usuarios internos y externos',
     ],
   },
-]
-
-const additionalProducts: ProductCard[] = [
   {
     image: '/img/phir-portalpacientes.png',
     title: 'PhirITPortal de Pacientes',
@@ -127,10 +123,11 @@ export default function ProductsServices() {
         primaryAction={{ label: 'Explorar ecosistema', to: '#ecosistema' }}
         image={{ src: '/img/phir-it-ecosistema.png', alt: 'Diagrama del ecosistema PHIR-IT' }}
         zoomableImage
+        plainBackground
       />
 
-      {/* Ecosistema */}
-      <section id="ecosistema" className="scroll-mt-24 bg-brand-surface-alt py-16 dark:bg-gray-900/50 lg:py-24">
+      {/* Ecosistema: todos los productos juntos */}
+      <section id="ecosistema" className="scroll-mt-24 bg-white py-16 dark:bg-brand-dark lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
             title="El ecosistema PHIR-IT"
@@ -138,23 +135,7 @@ export default function ProductsServices() {
             subtitle="Una plataforma modular que cubre cada etapa del flujo clínico en diagnóstico por imágenes."
           />
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {ecosystemProducts.map((product, i) => (
-              <ProductEntry key={product.title} product={product} delay={i * 0.1} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Productos adicionales */}
-      <section id="adicionales" className="scroll-mt-24 bg-white py-16 dark:bg-brand-dark lg:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeading
-            title="Productos Adicionales"
-            highlight="Adicionales"
-            subtitle="Complementá tu ecosistema con estas soluciones especializadas."
-          />
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {additionalProducts.map((product, i) => (
+            {products.map((product, i) => (
               <ProductEntry key={product.title} product={product} delay={i * 0.1} />
             ))}
           </div>
@@ -162,19 +143,23 @@ export default function ProductsServices() {
       </section>
 
       {/* Modalidades de servicio */}
-      <section id="modalidades" className="scroll-mt-24 bg-brand-surface-alt py-16 dark:bg-gray-900/50 lg:py-24">
+      <section id="modalidades" className="scroll-mt-24 bg-white py-16 dark:bg-brand-dark lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
             title="Modalidades de Servicio"
             highlight="Servicio"
             subtitle="Ofrecemos flexibilidad en la implementación de nuestras soluciones para adaptarnos a sus necesidades."
           />
-          <div className="mx-auto grid max-w-2xl gap-6 md:grid-cols-2">
+          <div className="mx-auto grid max-w-3xl gap-6 md:grid-cols-2">
             <AnimatedSection>
               <div className="flex h-full flex-col items-center rounded-xl border border-brand-border bg-white p-8 text-center shadow-soft dark:border-gray-800 dark:bg-gray-900">
-                <div className="mb-4 inline-flex size-16 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary shadow-md">
-                  <Building2 size={32} />
-                </div>
+                <img
+                  src={asset('/img/data-center-insitu.png')}
+                  alt="Implementación In Situ de PHIR-IT"
+                  className="mb-4 h-32 w-full object-contain"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <h3 className="mb-2 text-lg font-bold text-gray-900 dark:text-white">In Situ</h3>
                 <p className="text-sm text-brand-muted dark:text-gray-400">
                   Implementación en sus propias instalaciones, adaptada a su infraestructura existente.
@@ -183,9 +168,13 @@ export default function ProductsServices() {
             </AnimatedSection>
             <AnimatedSection delay={0.1}>
               <div className="flex h-full flex-col items-center rounded-xl border border-brand-border bg-white p-8 text-center shadow-soft dark:border-gray-800 dark:bg-gray-900">
-                <div className="mb-4 inline-flex size-16 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary shadow-md">
-                  <Cloud size={32} />
-                </div>
+                <img
+                  src={asset('/img/estructura-cloud.png')}
+                  alt="Solución Cloud de PHIR-IT"
+                  className="mb-4 h-32 w-full object-contain"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <h3 className="mb-2 text-lg font-bold text-gray-900 dark:text-white">Cloud</h3>
                 <p className="text-sm text-brand-muted dark:text-gray-400">
                   Solución basada en la nube, con opciones de servidor propio o gestionado por PHIR-IT.

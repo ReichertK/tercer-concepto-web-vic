@@ -53,7 +53,8 @@ export default function SuccessCases() {
           </>
         }
         subtitle="Descubrí cómo hemos ayudado a diversas instituciones de salud a optimizar sus procesos con nuestras soluciones tecnológicas."
-        image={{ src: '/img/illustrations/ranking.svg', alt: 'Casos de éxito' }}
+        image={{ src: '/img/casos-exito.png', alt: 'Casos de éxito de PHIR-IT' }}
+        plainBackground
       />
 
       <section className="bg-white py-16 dark:bg-brand-dark lg:py-24">
