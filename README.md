@@ -112,16 +112,16 @@ ruta correcta tanto en desarrollo como en producción.
 
 El formulario (`src/components/ui/ContactForm.tsx`) ya está **conectado y
 funcionando**: valida los datos, muestra estados de carga/éxito/error y envía
-cada consulta por correo a **info@phir-it.ar** a través de
+cada consulta por correo a **contacto@phir-it.ar** a través de
 [Web3Forms](https://web3forms.com) (un servicio gratuito que no necesita
 servidor propio ni backend).
 
 ### Único paso pendiente — Generar la clave de acceso
 
-La clave debe crearse desde la casilla **info@phir-it.ar**, porque ahí es donde
+La clave debe crearse desde la casilla **contacto@phir-it.ar**, porque ahí es donde
 llegarán los mensajes:
 
-1. Entrar a <https://web3forms.com> y poner el correo **info@phir-it.ar**.
+1. Entrar a <https://web3forms.com> y poner el correo **contacto@phir-it.ar**.
 2. Abrir el mail que envía Web3Forms a esa casilla y copiar la **Access Key**
    (es una clave pública, no es una contraseña).
 3. Pegar esa clave en `src/components/ui/ContactForm.tsx`, reemplazando el texto
@@ -142,7 +142,7 @@ const WEB3FORMS_ACCESS_KEY =
 
 ### A dónde llegan los mensajes
 
-Cada envío llega como un mail a **info@phir-it.ar** con el nombre, el correo y el
+Cada envío llega como un mail a **contacto@phir-it.ar** con el nombre, el correo y el
 mensaje de quien completó el formulario. El plan gratuito permite hasta 250
 envíos por mes; si se necesitara más, Web3Forms ofrece planes pagos.
 

@@ -32,7 +32,7 @@ type ContactFormData = z.infer<typeof contactSchema>
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error'
 
 // Clave pública de Web3Forms (es segura para exponer en el front). Se genera
-// gratis en https://web3forms.com con el correo info@phir-it.ar, que es la
+// gratis en https://web3forms.com con el correo contacto@phir-it.ar, que es la
 // casilla donde llegan los mensajes del formulario. Pegá la clave acá abajo.
 const WEB3FORMS_ACCESS_KEY =
   import.meta.env.VITE_WEB3FORMS_KEY ?? 'PEGAR_AQUI_LA_CLAVE_DE_WEB3FORMS'

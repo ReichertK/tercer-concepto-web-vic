@@ -59,11 +59,11 @@ export default function Contact() {
               Nuestro equipo está para ayudarte. Envianos un mensaje y te respondemos a la brevedad.
             </p>
             <a
-              href="mailto:info@phir-it.ar"
+              href="mailto:contacto@phir-it.ar"
               className="mt-6 inline-flex items-center gap-2 rounded-xl border border-white/40 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white hover:text-brand-dark"
             >
               <Mail size={18} />
-              info@phir-it.ar
+              contacto@phir-it.ar
             </a>
           </div>
           <div className="mx-auto mt-12 max-w-2xl">
