@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom'
 import { Menu, X, Moon, Sun } from 'lucide-react'
 import { m, AnimatePresence } from 'framer-motion'
 import { useTheme } from '../../hooks/useTheme'
-import { useNavbarVariant } from '../../hooks/navbarVariant'
 import { asset } from '../../utils/assets'
 
 const navLinks = [
@@ -13,57 +12,24 @@ const navLinks = [
   { to: '/contacto', label: 'Contacto' },
 ]
 
-// Estilos de cada opción que estamos evaluando: A (barra con color) y B (barra blanca).
-// El logo A tiene un degradado azul diagonal (claro arriba-izq → oscuro abajo-der);
-// la barra usa el mismo degradado para que el logo se funda sin recuadro visible.
-const variantStyles = {
-  color: {
-    nav: 'bg-gradient-to-br from-[#0587dc] to-[#0570be] shadow-soft',
-    logo: '/img/logo-letras-negras.png',
-    logoClass: 'h-12 max-w-[200px] sm:h-14 sm:max-w-[260px] rounded-full',
-    focusRing: 'focus-visible:ring-white/70',
-    linkActive: 'text-white bg-white/15',
-    linkIdle: 'text-white/85 hover:text-white hover:bg-white/10',
-    iconButton: 'text-white/85 hover:text-white hover:bg-white/10',
-  },
-  white: {
-    nav: 'bg-[#fcfdfc] shadow-soft border-b border-brand-border dark:border-gray-800 dark:bg-brand-dark',
-    logo: '/img/logo-banana.png',
-    // En modo oscuro invertimos la luminosidad del logo (fondo blanco → casi negro,
-    // texto oscuro → claro) y giramos el tono 180° para conservar el azul. El
-    // contrast(0.86) evita que el blanco caiga a negro puro y lo acerca al
-    // #12141a de la barra (brand-dark), para que se funda sin recuadro visible.
-    logoClass:
-      'h-16 max-w-[260px] sm:h-[4.5rem] sm:max-w-[340px] transition-[filter] dark:[filter:invert(1)_hue-rotate(180deg)_contrast(0.86)]',
-    focusRing: 'focus-visible:ring-brand-primary',
-    linkActive: 'text-brand-primary bg-brand-primary/10',
-    linkIdle:
-      'text-gray-600 hover:text-brand-primary hover:bg-brand-primary/5 dark:text-gray-300 dark:hover:text-white dark:hover:bg-white/5',
-    iconButton: 'text-gray-600 hover:text-brand-primary dark:text-gray-300 dark:hover:text-white',
-  },
-} as const
-
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const { theme, toggleTheme } = useTheme()
-  const { variant } = useNavbarVariant()
   const { pathname } = useLocation()
 
-  const s = variantStyles[variant]
-
   return (
-    <nav className={`fixed top-0 inset-x-0 z-50 ${s.nav}`}>
+    <nav className="fixed top-0 inset-x-0 z-50 bg-[#fcfdfc] shadow-soft border-b border-brand-border dark:border-gray-800 dark:bg-brand-dark">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           <Link
             to="/"
             aria-label="PHIR-IT — Ir al inicio"
-            className={`flex shrink-0 items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 ${s.focusRing}`}
+            className="flex shrink-0 items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
           >
             <img
-              src={asset(s.logo)}
+              src={asset('/img/logo-banana.png')}
               alt="Logo de PHIR-IT"
-              className={`w-auto object-contain ${s.logoClass}`}
+              className="h-16 max-w-[260px] w-auto object-contain sm:h-[4.5rem] sm:max-w-[340px] transition-[filter] dark:[filter:invert(1)_hue-rotate(180deg)_contrast(0.86)]"
             />
           </Link>
 
@@ -73,7 +39,9 @@ export default function Navbar() {
                 key={link.to}
                 to={link.to}
                 className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
-                  pathname === link.to ? s.linkActive : s.linkIdle
+                  pathname === link.to
+                    ? 'text-brand-primary bg-brand-primary/10'
+                    : 'text-gray-600 hover:text-brand-primary hover:bg-brand-primary/5 dark:text-gray-300 dark:hover:text-white dark:hover:bg-white/5'
                 }`}
               >
                 {link.label}
@@ -84,7 +52,7 @@ export default function Navbar() {
               type="button"
               onClick={toggleTheme}
               aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
-              className={`ml-2 rounded-lg p-2 transition-colors ${s.iconButton}`}
+              className="ml-2 rounded-lg p-2 transition-colors text-gray-600 hover:text-brand-primary dark:text-gray-300 dark:hover:text-white"
             >
               {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
             </button>
@@ -95,7 +63,7 @@ export default function Navbar() {
               type="button"
               onClick={toggleTheme}
               aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
-              className={`rounded-lg p-2 transition-colors ${s.iconButton}`}
+              className="rounded-lg p-2 transition-colors text-gray-600 hover:text-brand-primary dark:text-gray-300 dark:hover:text-white"
             >
               {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
             </button>
@@ -104,7 +72,7 @@ export default function Navbar() {
               onClick={() => setMobileOpen((o) => !o)}
               aria-label="Menú de navegación"
               aria-expanded={mobileOpen}
-              className={`rounded-lg p-2 transition-colors ${s.iconButton}`}
+              className="rounded-lg p-2 transition-colors text-gray-600 hover:text-brand-primary dark:text-gray-300 dark:hover:text-white"
             >
               {mobileOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
@@ -128,7 +96,9 @@ export default function Navbar() {
                   to={link.to}
                   onClick={() => setMobileOpen(false)}
                   className={`block rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
-                    pathname === link.to ? s.linkActive : s.linkIdle
+                    pathname === link.to
+                      ? 'text-brand-primary bg-brand-primary/10'
+                      : 'text-gray-600 hover:text-brand-primary hover:bg-brand-primary/5 dark:text-gray-300 dark:hover:text-white dark:hover:bg-white/5'
                   }`}
                 >
                   {link.label}

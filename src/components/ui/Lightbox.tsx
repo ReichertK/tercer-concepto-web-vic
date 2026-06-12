@@ -11,14 +11,11 @@ interface LightboxImageProps {
   height?: number
 }
 
-// Imagen que se amplía a pantalla completa al hacer clic, sobre un fondo oscuro.
-// Útil para las capturas del sistema (PACS, informes). Se cierra con Esc o clic fuera.
 export default function Lightbox({ src, alt, className = '', width, height }: LightboxImageProps) {
   const [open, setOpen] = useState(false)
 
   const close = useCallback(() => setOpen(false), [])
 
-  // Cerrar con Escape y bloquear el scroll de fondo mientras está abierto.
   useEffect(() => {
     if (!open) return
 

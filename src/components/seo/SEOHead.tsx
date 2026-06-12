@@ -10,7 +10,7 @@ interface SEOHeadProps {
 
 const BASE_URL = 'https://phirit.com'
 
-export default function SEOHead({ title, description, path, image = '/img/logo2.png', noIndex }: SEOHeadProps) {
+export default function SEOHead({ title, description, path, image = '/img/logo-banana.png', noIndex }: SEOHeadProps) {
   const fullTitle = `${title} | PHIR-IT`
   const canonicalUrl = `${BASE_URL}${path}`
   const imageUrl = `${BASE_URL}${image}`

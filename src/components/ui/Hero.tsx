@@ -10,12 +10,8 @@ interface HeroProps {
   primaryAction?: { label: string; to: string }
   secondaryAction?: { label: string; to: string }
   image?: { src: string; alt: string }
-  // Permite ampliar la imagen al hacer clic (Lightbox).
   zoomableImage?: boolean
-  // Fondo blanco liso en lugar del degradado celeste.
   plainBackground?: boolean
-  // Imagen de fondo a pantalla completa con overlay oscuro. Si se define, el
-  // texto del Hero pasa a blanco. Ruta relativa a /public.
   backgroundImage?: string
 }
 
@@ -43,7 +39,6 @@ export default function Hero({
     >
       {hasBg ? (
         <>
-          {/* Imagen de fondo */}
           <img
             src={asset(backgroundImage!)}
             alt=""
@@ -52,7 +47,6 @@ export default function Hero({
             loading="eager"
             decoding="async"
           />
-          {/* Overlay para que el texto blanco se lea bien */}
           <div className="absolute inset-0 bg-gradient-to-r from-brand-dark/90 via-brand-dark/70 to-brand-dark/40" />
           <div className="absolute inset-0 bg-brand-dark/30" />
         </>

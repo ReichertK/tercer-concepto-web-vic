@@ -59,9 +59,12 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="inline-flex items-center gap-2">
-              <img src={asset('/img/logo2.png')} alt="Logo de PHIR-IT" className="size-10 rounded-lg object-contain" />
-              <span className="text-lg font-bold text-gray-900 dark:text-white">PHIR-IT</span>
+            <Link to="/" className="inline-flex items-center">
+              <img
+                src={asset('/img/logo-banana.png')}
+                alt="Logo de PHIR-IT"
+                className="h-12 w-auto object-contain transition-[filter] dark:[filter:invert(1)_hue-rotate(180deg)_contrast(0.86)]"
+              />
             </Link>
             <p className="mt-3 text-sm text-brand-muted dark:text-gray-400">
               Soluciones tecnológicas integrales para el sector salud. Ecosistema completo de gestión de imágenes médicas e informes.

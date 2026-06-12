@@ -127,7 +127,6 @@ export default function ProductsServices() {
         plainBackground
       />
 
-      {/* Ecosistema: todos los productos juntos */}
       <section id="ecosistema" className="scroll-mt-24 bg-white py-16 dark:bg-brand-dark lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
@@ -143,7 +142,6 @@ export default function ProductsServices() {
         </div>
       </section>
 
-      {/* Modalidades de servicio */}
       <section id="modalidades" className="scroll-mt-24 bg-white py-16 dark:bg-brand-dark lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
