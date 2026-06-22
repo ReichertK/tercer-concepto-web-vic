@@ -14,7 +14,7 @@ interface ProductCard {
 
 const products: ProductCard[] = [
   {
-    image: '/img/phir-worklist.png',
+    image: '/img/phir-worklist.svg',
     title: 'PhirITWorkList',
     description: 'Módulo webservice que recibe mensajes del RIS del cliente en el momento de la admisión del turno/paciente/práctica.',
     features: [
@@ -80,14 +80,10 @@ function ProductEntry({ product, delay }: { product: ProductCard; delay: number 
   return (
     <AnimatedSection delay={delay}>
       <div className="group flex h-full flex-col rounded-xl border border-brand-border bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium dark:border-gray-800 dark:bg-gray-900">
-        <img
+        <Lightbox
           src={asset(product.image)}
-          alt={product.title}
-          width={112}
-          height={112}
-          className="mb-4 size-28 self-center object-contain transition-transform duration-300 group-hover:scale-105"
-          loading="lazy"
-          decoding="async"
+          alt={`Vista del módulo ${product.title}`}
+          className="mb-4 aspect-video w-full border border-brand-border bg-white dark:border-gray-800 dark:bg-gray-950"
         />
         <h3 className="mb-2 text-lg font-bold text-gray-900 dark:text-white">{product.title}</h3>
         <p className="mb-3 text-sm text-brand-muted dark:text-gray-400">{product.description}</p>
