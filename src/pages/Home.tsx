@@ -5,6 +5,18 @@ import AnimatedSection from '../components/ui/AnimatedSection'
 import Lightbox from '../components/ui/Lightbox'
 import { asset } from '../utils/assets'
 
+const clientes = [
+  { logo: '/img/clientes/cmh-salud.jpg', name: 'CMH Salud' },
+  { logo: '/img/clientes/sirio-libanes.jpg', name: 'Hospital Sirio Libanés' },
+  { logo: '/img/clientes/sanatorio-estrada.jpg', name: 'Sanatorio Estrada' },
+  { logo: '/img/clientes/diagnosticar.jpg', name: 'Diagnosticar' },
+  { logo: '/img/clientes/dime.jpg', name: 'DiMe Diagnóstico Médico' },
+  { logo: '/img/clientes/radiomedical.jpg', name: 'Radiomedical' },
+  { logo: '/img/clientes/amoemra.jpg', name: 'Amoemra' },
+  { logo: '/img/clientes/san-camilo.png', name: 'Centro Médico San Camilo' },
+  { logo: '/img/clientes/hospital-modelo.jpg', name: 'Hospital Privado Modelo' },
+]
+
 const carteles = [
   {
     image: '/img/cartel1.png',
@@ -122,6 +134,41 @@ export default function Home() {
               </Link>
             </AnimatedSection>
           </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-16 dark:bg-brand-dark lg:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <AnimatedSection>
+            <div className="mx-auto mb-12 max-w-2xl text-center">
+              <span className="mb-5 inline-block h-1 w-12 rounded-full bg-brand-primary" />
+              <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">
+                Confían en <span className="text-highlight">nosotros</span>
+              </h2>
+              <p className="mt-4 text-brand-muted dark:text-gray-400">
+                Clínicas, hospitales y centros de diagnóstico que ya digitalizaron su flujo de
+                trabajo con el ecosistema PHIR-IT.
+              </p>
+            </div>
+          </AnimatedSection>
+          <AnimatedSection delay={0.1}>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+              {clientes.map((cliente) => (
+                <div
+                  key={cliente.name}
+                  className="flex items-center justify-center rounded-xl border border-brand-border bg-white p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium dark:border-gray-800 dark:bg-gray-900"
+                >
+                  <img
+                    src={asset(cliente.logo)}
+                    alt={cliente.name}
+                    className="h-16 w-full object-contain"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              ))}
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 
