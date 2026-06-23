@@ -14,7 +14,7 @@ interface ProductCard {
 
 const products: ProductCard[] = [
   {
-    image: '/img/phir-worklist.svg',
+    image: '/img/phir-worklist.png',
     title: 'PhirITWorkList',
     description: 'Módulo webservice que recibe mensajes del RIS del cliente en el momento de la admisión del turno/paciente/práctica.',
     features: [

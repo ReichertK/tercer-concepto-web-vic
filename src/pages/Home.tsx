@@ -19,7 +19,7 @@ const clientes = [
 
 const carteles = [
   {
-    image: '/img/cartel1.png',
+    image: '/img/plataforma-web.png',
     alt: 'Plataforma web de PHIR-IT accesible desde múltiples dispositivos',
     title: 'Plataforma 100% web, en cualquier dispositivo',
     paragraphs: [
@@ -37,7 +37,7 @@ const carteles = [
     ],
   },
   {
-    image: '/img/Cartel3.png',
+    image: '/img/software-modular.png',
     alt: 'Software modular de PHIR-IT que escala con la institución',
     title: 'Software modular que impulsa su crecimiento',
     paragraphs: [
@@ -167,6 +167,15 @@ export default function Home() {
                   />
                 </div>
               ))}
+              <div className="group overflow-hidden rounded-xl border border-brand-primary/30 bg-white shadow-medium ring-1 ring-brand-primary/15 transition-all duration-300 hover:-translate-y-1 hover:shadow-medium hover:ring-brand-primary/30 dark:border-brand-primary/30 dark:bg-gray-900">
+                <img
+                  src={asset('/img/clientes/otros-clientes.png')}
+                  alt="Y muchas otras instituciones que confían en PHIR-IT"
+                  className="h-full min-h-28 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
             </div>
           </AnimatedSection>
         </div>
