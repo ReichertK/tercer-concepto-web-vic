@@ -1,4 +1,3 @@
-import { Hospital, Building2, ClipboardPlus, Network, FileHeart, MonitorSmartphone } from 'lucide-react'
 import SEOHead from '../components/seo/SEOHead'
 import Hero from '../components/ui/Hero'
 import SectionHeading from '../components/ui/SectionHeading'
@@ -6,32 +5,32 @@ import CaseCard from '../components/ui/CaseCard'
 
 const cases = [
   {
-    icon: Hospital,
+    image: '/img/clientes/cmh-salud.jpg',
     title: 'CMH Salud – Hurlingham',
     description: 'Implementación exitosa del Ecosistema PHIRIT, optimizando la gestión de turnos y estudios médicos.',
   },
   {
-    icon: Building2,
+    image: '/img/clientes/sirio-libanes.jpg',
     title: 'HSL – CABA',
     description: 'Mejora significativa en la eficiencia de procesos y manejo de información médica con nuestras soluciones.',
   },
   {
-    icon: ClipboardPlus,
+    image: '/img/clientes/dime.jpg',
     title: 'Dime – Gualeguay',
     description: 'Implementación exitosa de PhirITPacs, mejorando la gestión y visualización de imágenes médicas.',
   },
   {
-    icon: Network,
-    title: 'Radiomed – F. Varela',
+    image: '/img/clientes/hospital-modelo.jpg',
+    title: 'Hospital Privado Modelo',
     description: 'Optimización de flujos de trabajo y mejora en la calidad de atención al paciente mediante el Ecosistema PHIRIT.',
   },
   {
-    icon: FileHeart,
+    image: '/img/clientes/amoemra.jpg',
     title: 'Amoemra – CABA',
     description: 'Integración exitosa de PhirITInformes, mejorando la eficiencia en la generación y gestión de informes médicos.',
   },
   {
-    icon: MonitorSmartphone,
+    image: '/img/clientes/diagnosticar.jpg',
     title: 'Diagnosticar – Berazategui',
     description: 'Transformación digital integral en procesos de diagnóstico por imágenes con el Ecosistema PHIRIT completo.',
   },

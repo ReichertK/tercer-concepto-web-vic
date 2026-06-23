@@ -167,7 +167,7 @@ export default function Home() {
                   />
                 </div>
               ))}
-              <div className="group overflow-hidden rounded-xl border border-brand-primary/30 bg-white shadow-medium ring-1 ring-brand-primary/15 transition-all duration-300 hover:-translate-y-1 hover:shadow-medium hover:ring-brand-primary/30 dark:border-brand-primary/30 dark:bg-gray-900">
+              <div className="group relative overflow-hidden rounded-xl border border-brand-primary/30 bg-white shadow-medium ring-1 ring-brand-primary/15 transition-all duration-300 hover:-translate-y-1 hover:shadow-medium hover:ring-brand-primary/30 dark:border-brand-primary/30 dark:bg-gray-900">
                 <img
                   src={asset('/img/clientes/otros-clientes.png')}
                   alt="Y muchas otras instituciones que confían en PHIR-IT"
@@ -175,6 +175,11 @@ export default function Home() {
                   loading="lazy"
                   decoding="async"
                 />
+                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 via-black/20 to-transparent p-4">
+                  <span className="text-sm font-bold uppercase tracking-wide text-white drop-shadow-md">
+                    Otros clientes
+                  </span>
+                </div>
               </div>
             </div>
           </AnimatedSection>
