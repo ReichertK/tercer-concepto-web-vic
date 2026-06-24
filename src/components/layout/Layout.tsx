@@ -5,11 +5,33 @@ import Footer from './Footer'
 import BackToTop from './BackToTop'
 
 export default function Layout() {
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [pathname])
+    // Sin hash: arriba de todo, como siempre.
+    if (!hash) {
+      window.scrollTo(0, 0)
+      return
+    }
+
+    // Con hash, scrolleamos a la sección. Como las páginas son lazy, el elemento
+    // puede no estar montado todavía, así que reintentamos unos frames.
+    const id = decodeURIComponent(hash.slice(1))
+    let frames = 0
+    let raf = 0
+    const tryScroll = () => {
+      const el = document.getElementById(id)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        return
+      }
+      if (frames++ < 30) {
+        raf = requestAnimationFrame(tryScroll)
+      }
+    }
+    raf = requestAnimationFrame(tryScroll)
+    return () => cancelAnimationFrame(raf)
+  }, [pathname, hash])
 
   return (
     <div className="flex min-h-screen flex-col">

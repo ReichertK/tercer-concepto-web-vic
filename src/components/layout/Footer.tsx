@@ -23,10 +23,10 @@ const footerSections = [
   {
     title: 'Productos',
     links: [
-      { label: 'PhirITWorkList', href: '/productos-servicios#ecosistema' },
-      { label: 'PhirITPacs', href: '/productos-servicios#ecosistema' },
-      { label: 'PhirITInformes', href: '/productos-servicios#ecosistema' },
-      { label: 'Portal de Pacientes', href: '/productos-servicios#ecosistema' },
+      { label: 'PhirITWorkList', href: '/productos-servicios#worklist' },
+      { label: 'PhirITPacs', href: '/productos-servicios#pacs' },
+      { label: 'PhirITInformes', href: '/productos-servicios#informes' },
+      { label: 'Portal de Pacientes', href: '/productos-servicios#portal-pacientes' },
     ],
   },
   {
@@ -40,8 +40,8 @@ const footerSections = [
   {
     title: 'Servicios',
     links: [
-      { label: 'Implementación In Situ', href: '/productos-servicios#modalidades' },
-      { label: 'Solución Cloud', href: '/productos-servicios#modalidades' },
+      { label: 'Implementación In Situ', href: '/productos-servicios#in-situ' },
+      { label: 'Solución Cloud', href: '/productos-servicios#cloud' },
       { label: 'Soporte Técnico', href: '/contacto' },
     ],
   },

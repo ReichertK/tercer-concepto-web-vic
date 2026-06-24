@@ -6,6 +6,7 @@ import Lightbox from '../components/ui/Lightbox'
 import { asset } from '../utils/assets'
 
 interface ProductCard {
+  id: string
   image: string
   title: string
   description: string
@@ -14,6 +15,7 @@ interface ProductCard {
 
 const products: ProductCard[] = [
   {
+    id: 'worklist',
     image: '/img/phir-worklist.png',
     title: 'PhirITWorkList',
     description: 'Módulo webservice que recibe mensajes del RIS del cliente en el momento de la admisión del turno/paciente/práctica.',
@@ -24,6 +26,7 @@ const products: ProductCard[] = [
     ],
   },
   {
+    id: 'pacs',
     image: '/img/phir-pacs.png',
     title: 'PhirITPacs',
     description: 'Servidor de imágenes DICOM con un motor de visualización versátil y veloz.',
@@ -34,6 +37,7 @@ const products: ProductCard[] = [
     ],
   },
   {
+    id: 'informes',
     image: '/img/phirit-informes.png',
     title: 'PhirITInformes',
     description: 'El corazón del ecosistema: gestiona todo el workflow desde el ingreso de la imagen hasta la entrega del informe médico.',
@@ -45,6 +49,7 @@ const products: ProductCard[] = [
     ],
   },
   {
+    id: 'portal-pacientes',
     image: '/img/phir-portalpacientes.png',
     title: 'PhirITPortal de Pacientes',
     description: 'Permite a los pacientes acceder a su historial de estudios, prácticas e informes dentro de la institución.',
@@ -55,6 +60,7 @@ const products: ProductCard[] = [
     ],
   },
   {
+    id: 'interfaces',
     image: '/img/phir-api.png',
     title: 'PhirITInterface',
     description: 'API para acceder a la información de estudios y estados del workflow.',
@@ -65,6 +71,7 @@ const products: ProductCard[] = [
     ],
   },
   {
+    id: 'ris',
     image: '/img/phir-ris.png',
     title: 'PhirITRis',
     description: 'Sistema integral que gestiona todas las agendas de turnos y pacientes de la empresa.',
@@ -79,7 +86,10 @@ const products: ProductCard[] = [
 function ProductEntry({ product, delay }: { product: ProductCard; delay: number }) {
   return (
     <AnimatedSection delay={delay}>
-      <div className="group flex h-full flex-col rounded-xl border border-brand-border bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium dark:border-gray-800 dark:bg-gray-900">
+      <div
+        id={product.id}
+        className="group flex h-full scroll-mt-24 flex-col rounded-xl border border-brand-border bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium dark:border-gray-800 dark:bg-gray-900"
+      >
         <Lightbox
           src={asset(product.image)}
           alt={`Vista del módulo ${product.title}`}
@@ -147,7 +157,7 @@ export default function ProductsServices() {
           />
           <div className="mx-auto grid max-w-3xl gap-6 md:grid-cols-2">
             <AnimatedSection>
-              <div className="flex h-full flex-col items-center rounded-xl border border-brand-border bg-white p-8 text-center shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium dark:border-gray-800 dark:bg-gray-900">
+              <div id="in-situ" className="flex h-full scroll-mt-24 flex-col items-center rounded-xl border border-brand-border bg-white p-8 text-center shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium dark:border-gray-800 dark:bg-gray-900">
                 <Lightbox
                   src={asset('/img/data-center-insitu.png')}
                   alt="Implementación In Situ de PHIR-IT"
@@ -160,7 +170,7 @@ export default function ProductsServices() {
               </div>
             </AnimatedSection>
             <AnimatedSection delay={0.1}>
-              <div className="flex h-full flex-col items-center rounded-xl border border-brand-border bg-white p-8 text-center shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium dark:border-gray-800 dark:bg-gray-900">
+              <div id="cloud" className="flex h-full scroll-mt-24 flex-col items-center rounded-xl border border-brand-border bg-white p-8 text-center shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium dark:border-gray-800 dark:bg-gray-900">
                 <Lightbox
                   src={asset('/img/estructura-cloud.png')}
                   alt="Solución Cloud de PHIR-IT"
