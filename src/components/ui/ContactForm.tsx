@@ -34,7 +34,7 @@ type FormStatus = 'idle' | 'submitting' | 'success' | 'error' | 'fallback'
 const CONTACT_EMAIL = 'contacto@phir-it.ar'
 
 const WEB3FORMS_ACCESS_KEY =
-  import.meta.env.VITE_WEB3FORMS_KEY ?? 'PEGAR_AQUI_LA_CLAVE_DE_WEB3FORMS'
+  import.meta.env.VITE_WEB3FORMS_KEY ?? '76dd385c-b1a5-4fdd-9a14-fcca624d1685'
 
 const isWeb3FormsConfigured =
   WEB3FORMS_ACCESS_KEY !== 'PEGAR_AQUI_LA_CLAVE_DE_WEB3FORMS' && WEB3FORMS_ACCESS_KEY.length > 0
