@@ -14,7 +14,7 @@ y optimización de rendimiento.
 - [Instalación y desarrollo](#instalación-y-desarrollo)
 - [Estructura del proyecto](#estructura-del-proyecto)
 - [Gestión de imágenes](#gestión-de-imágenes)
-- [A) Guía de integración del formulario de contacto](#a-guía-de-integración-del-formulario-de-contacto)
+- [A) Formulario de contacto](#a-formulario-de-contacto)
 - [B) Guía de despliegue (build y hosting)](#b-guía-de-despliegue-build-y-hosting)
 - [Modo oscuro](#modo-oscuro)
 
@@ -108,53 +108,31 @@ ruta correcta tanto en desarrollo como en producción.
 
 ---
 
-## A) Formulario de contacto (Web3Forms)
+## A) Formulario de contacto
 
-El formulario (`src/components/ui/ContactForm.tsx`) ya está **conectado y
-funcionando**: valida los datos, muestra estados de carga/éxito/error y envía
-cada consulta por correo a **contacto@phir-it.ar** a través de
-[Web3Forms](https://web3forms.com) (un servicio gratuito que no necesita
-servidor propio ni backend).
+El formulario (`src/components/ui/ContactForm.tsx`) valida los datos y muestra los
+estados de carga, éxito y error. El correo se manda con un backend propio hecho en
+**C# (ASP.NET Core)**, que está en la carpeta `backend/`.
 
-### Único paso pendiente — Generar la clave de acceso
+Mientras la web esté en GitHub Pages (hosting estático), el backend no corre, así
+que el formulario abre el correo del visitante con el mensaje ya escrito hacia
+**contacto@phir-it.ar**. Cuando el sitio se mude a un servidor con .NET, el
+formulario pasa a enviar solo.
 
-La clave debe crearse desde la casilla **contacto@phir-it.ar**, porque ahí es donde
-llegarán los mensajes:
+### Cómo dejar el backend andando
 
-1. Entrar a <https://web3forms.com> y poner el correo **contacto@phir-it.ar**.
-2. Abrir el mail que envía Web3Forms a esa casilla y copiar la **Access Key**
-   (es una clave pública, no es una contraseña).
-3. Pegar esa clave en `src/components/ui/ContactForm.tsx`, reemplazando el texto
-   `PEGAR_AQUI_LA_CLAVE_DE_WEB3FORMS`:
+1. Subir/publicar la carpeta `backend/` en un servidor con .NET 8.
+2. Copiar `backend/appsettings.example.json` a `backend/appsettings.json` y cargar
+   los datos del SMTP (host, puerto, usuario y contraseña) que da el panel de
+   Ferozo. Ese archivo con la contraseña queda solo en el servidor, no se sube al
+   repo (ya está en `.gitignore`).
+3. Levantarlo con `dotnet run` o publicarlo en el hosting .NET.
+4. En `src/components/ui/ContactForm.tsx`, poner la URL del backend en
+   `CONTACT_API_ENDPOINT` (por ejemplo `https://www.phir-it.ar/contact`), hacer
+   `npm run build` y desplegar.
 
-```ts
-const WEB3FORMS_ACCESS_KEY =
-  import.meta.env.VITE_WEB3FORMS_KEY ?? 'a1b2c3d4-0000-0000-0000-xxxxxxxxxxxx'
-```
-
-4. Guardar, hacer commit y push. El deploy automático deja el formulario
-   enviando mails de verdad.
-
-> La clave es **pública por diseño** (Web3Forms la pensó para vivir en el
-> frontend), así que no hay problema en dejarla en el código. Si se prefiere no
-> tenerla en el repositorio, se puede definir como variable de entorno
-> `VITE_WEB3FORMS_KEY` en el build.
-
-### A dónde llegan los mensajes
-
-Cada envío llega como un mail a **contacto@phir-it.ar** con el nombre, el correo y el
-mensaje de quien completó el formulario. El plan gratuito permite hasta 250
-envíos por mes; si se necesitara más, Web3Forms ofrece planes pagos.
-
-### Formato del mensaje
-
-```json
-{
-  "name": "Juan Pérez",
-  "email": "juan@clinica.com",
-  "message": "Quisiera una demo del ecosistema PHIR-IT."
-}
-```
+Cada envío llega como un mail a **contacto@phir-it.ar** con el nombre, el correo y
+el mensaje de quien completó el formulario.
 
 ---
 

@@ -16,8 +16,10 @@ dist-ssr
 .env
 .env.*
 
-# Backend: credenciales reales del SMTP (no subir al repo)
-backend/config.php
+# Backend C#: config real con la contraseña y compilados de .NET (no subir)
+backend/appsettings.json
+backend/bin/
+backend/obj/
 
 # Editor directories and files
 .vscode/*
