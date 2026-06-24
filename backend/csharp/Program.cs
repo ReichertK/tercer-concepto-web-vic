@@ -2,16 +2,15 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 
-// Backend del formulario de contacto, en C# (ASP.NET Core).
-// Recibe lo que carga la gente en la web y lo manda por mail con el SMTP propio.
+// Backend del form de contacto en C# (ASP.NET Core).
+// Recibe lo que carga la gente y lo manda por mail con el SMTP propio. Nada más.
 //
-// Para que ande:
-//   1. Copiar appsettings.example.json a appsettings.json y completar los datos
-//      del SMTP (esos los da el panel de Ferozo). El appsettings.json con la
-//      contraseña no se sube al repo, queda solo en el servidor.
-//   2. Correr "dotnet run" (o publicarlo en el servidor .NET).
-//   3. En la web, en ContactForm.tsx, poner la URL de este backend en
-//      CONTACT_API_ENDPOINT (por ejemplo https://www.phir-it.ar/contact).
+// Para ponerlo a andar:
+//   1. Copiá appsettings.example.json a appsettings.json y cargá el SMTP del panel
+//      de Ferozo. Ese archivo lleva la contraseña, así que no sube al repo.
+//   2. Levantalo con "dotnet run", o publicalo en el server .NET.
+//   3. En ContactForm.tsx, apuntá CONTACT_API_ENDPOINT a este backend
+//      (ej. https://www.phir-it.ar/contact).
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,14 +32,14 @@ app.UseCors();
 
 app.MapPost("/contact", async (ContactRequest req, IConfiguration config) =>
 {
-    // Campo trampa: si viene completo es un bot. Respondemos ok y no mandamos nada.
+    // Campo trampa. Si vino completo es un bot: devolvemos ok y no mandamos nada.
     if (!string.IsNullOrWhiteSpace(req.Botcheck))
     {
         return Results.Ok(new { success = true });
     }
 
-    // Sacamos saltos de línea del nombre y el mail para que nadie pueda meter
-    // cabeceras raras en el correo.
+    // Saca saltos de línea de nombre y mail. Si no, alguien podría inyectar
+    // cabeceras en el correo.
     var name = (req.Name ?? string.Empty).Replace("\r", " ").Replace("\n", " ").Trim();
     var email = (req.Email ?? string.Empty).Replace("\r", " ").Replace("\n", " ").Trim();
     var message = (req.Message ?? string.Empty).Trim();

@@ -1,15 +1,15 @@
 <?php
 
-// Backend del formulario de contacto, versión PHP.
-// Recibe lo que carga la gente en la web y lo manda por mail con el SMTP propio.
-// No usa librerías ni Composer: anda en cualquier hosting con PHP (Ferozo incluido).
+// Backend del form de contacto, versión PHP.
+// Recibe lo que carga la gente y lo manda por mail con el SMTP propio.
+// Sin librerías ni Composer: anda en cualquier hosting con PHP (Ferozo incluido).
 //
-// Para que ande:
-//   1. Copiar config.example.php a config.php y completar los datos del SMTP.
-//      El config.php con la contraseña queda solo en el servidor (no va al repo).
-//   2. Subir esta carpeta al hosting.
-//   3. En la web, en ContactForm.tsx, poner la URL de este archivo en
-//      CONTACT_API_ENDPOINT (por ejemplo https://www.phir-it.ar/php/contact.php).
+// Para ponerlo a andar:
+//   1. Copiá config.example.php a config.php y cargá el SMTP. El config.php lleva
+//      la contraseña, así que queda solo en el server (no va al repo).
+//   2. Subí esta carpeta al hosting.
+//   3. En ContactForm.tsx, apuntá CONTACT_API_ENDPOINT a este archivo
+//      (ej. https://www.phir-it.ar/php/contact.php).
 
 declare(strict_types=1);
 
@@ -23,7 +23,7 @@ if (!is_file($configPath)) {
 /** @var array<string,mixed> $cfg */
 $cfg = require $configPath;
 
-// Solo dejamos pasar al dominio del sitio.
+// CORS: solo dejamos entrar al dominio del sitio.
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 $allowedOrigin = (string) ($cfg['allowed_origin'] ?? '');
 if ($allowedOrigin !== '' && $origin === $allowedOrigin) {
@@ -61,7 +61,7 @@ $email = $clean((string) ($data['email'] ?? ''));
 $message = trim((string) ($data['message'] ?? ''));
 $honeypot = trim((string) ($data['botcheck'] ?? ($data['_gotcha'] ?? '')));
 
-// Campo trampa: si viene completo es un bot. Respondemos ok y no mandamos nada.
+// Campo trampa. Si vino completo es un bot: devolvemos ok y no mandamos nada.
 if ($honeypot !== '') {
     echo json_encode(['success' => true, 'message' => 'Mensaje recibido.']);
     exit;

@@ -33,9 +33,10 @@ type FormStatus = 'idle' | 'submitting' | 'success' | 'error' | 'fallback'
 
 const CONTACT_EMAIL = 'contacto@phir-it.ar'
 
-// URL del backend que manda el mail. Mientras esté vacío, el formulario abre el
-// correo del visitante con el mensaje ya armado. Cuando el backend en C# esté
-// publicado, poné acá su dirección (por ejemplo 'https://www.phir-it.ar/contact').
+// URL del backend que manda el mail (sirve el de C# o el de PHP, da igual).
+// Mientras esté vacío, el form abre el correo del visitante con el mensaje ya armado.
+// Cuando publiques un backend, pegá acá su dirección
+// (ej. 'https://www.phir-it.ar/contact' o '.../php/contact.php').
 const CONTACT_API_ENDPOINT = ''
 
 function openMailClient(data: ContactFormData) {
