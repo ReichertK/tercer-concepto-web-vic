@@ -29,10 +29,23 @@ const contactSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactSchema>
 
-type FormStatus = 'idle' | 'submitting' | 'success' | 'error'
+type FormStatus = 'idle' | 'submitting' | 'success' | 'error' | 'fallback'
+
+const CONTACT_EMAIL = 'contacto@phir-it.ar'
 
 const WEB3FORMS_ACCESS_KEY =
   import.meta.env.VITE_WEB3FORMS_KEY ?? 'PEGAR_AQUI_LA_CLAVE_DE_WEB3FORMS'
+
+const isWeb3FormsConfigured =
+  WEB3FORMS_ACCESS_KEY !== 'PEGAR_AQUI_LA_CLAVE_DE_WEB3FORMS' && WEB3FORMS_ACCESS_KEY.length > 0
+
+function openMailClient(data: ContactFormData) {
+  const subject = encodeURIComponent('Nueva consulta desde la web de PHIR-IT')
+  const body = encodeURIComponent(
+    `Nombre: ${data.name}\nEmail: ${data.email}\n\n${data.message}`,
+  )
+  window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`
+}
 
 export default function ContactForm() {
   const [status, setStatus] = useState<FormStatus>('idle')
@@ -49,6 +62,13 @@ export default function ContactForm() {
   })
 
   const onSubmit = async (data: ContactFormData) => {
+    if (!isWeb3FormsConfigured) {
+      openMailClient(data)
+      setStatus('fallback')
+      reset()
+      return
+    }
+
     setStatus('submitting')
     try {
       const res = await fetch('https://api.web3forms.com/submit', {
@@ -73,10 +93,14 @@ export default function ContactForm() {
         setStatus('success')
         reset()
       } else {
-        setStatus('error')
+        openMailClient(data)
+        setStatus('fallback')
+        reset()
       }
     } catch {
-      setStatus('error')
+      openMailClient(data)
+      setStatus('fallback')
+      reset()
     }
   }
 
@@ -94,6 +118,29 @@ export default function ContactForm() {
           className="mt-2 rounded-xl bg-brand-primary px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-primary-600"
         >
           Enviar otro mensaje
+        </button>
+      </div>
+    )
+  }
+
+  if (status === 'fallback') {
+    return (
+      <div className="flex flex-col items-center gap-4 rounded-xl border border-brand-primary/30 bg-brand-primary/5 p-8 text-center">
+        <Send className="text-brand-primary" size={48} />
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white">Abrimos tu correo</h3>
+        <p className="text-sm text-brand-muted dark:text-gray-400">
+          Se abrió tu aplicación de correo con el mensaje listo para enviar a{' '}
+          <a href={`mailto:${CONTACT_EMAIL}`} className="font-medium text-brand-primary hover:underline">
+            {CONTACT_EMAIL}
+          </a>
+          . Si no se abrió, escribinos directamente a esa dirección.
+        </p>
+        <button
+          type="button"
+          onClick={() => setStatus('idle')}
+          className="mt-2 rounded-xl bg-brand-primary px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-primary-600"
+        >
+          Volver al formulario
         </button>
       </div>
     )
