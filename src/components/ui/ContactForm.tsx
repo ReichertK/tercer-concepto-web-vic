@@ -33,6 +33,12 @@ type FormStatus = 'idle' | 'submitting' | 'success' | 'error' | 'fallback'
 
 const CONTACT_EMAIL = 'contacto@phir-it.ar'
 
+// Backend SMTP propio (opcional). Dejar vacío mientras la web esté en GitHub
+// Pages: en ese caso se usa Web3Forms. Cuando el sitio se mude a un hosting con
+// PHP (p. ej. Ferozo) y se suba la carpeta backend/, poné aquí su URL pública,
+// por ejemplo '/backend/contact.php', y el formulario enviará por SMTP propio.
+const CONTACT_PHP_ENDPOINT = ''
+
 const WEB3FORMS_ACCESS_KEY =
   import.meta.env.VITE_WEB3FORMS_KEY ?? '76dd385c-b1a5-4fdd-9a14-fcca624d1685'
 
@@ -62,34 +68,48 @@ export default function ContactForm() {
   })
 
   const onSubmit = async (data: ContactFormData) => {
-    if (!isWeb3FormsConfigured) {
-      openMailClient(data)
-      setStatus('fallback')
-      reset()
-      return
-    }
-
     setStatus('submitting')
     try {
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_ACCESS_KEY,
-          subject: 'Nueva consulta desde la web de PHIR-IT',
-          from_name: 'Web PHIR-IT',
-          name: data.name,
-          email: data.email,
-          message: data.message,
-        }),
-      })
+      let delivered = false
 
-      const result = await res.json()
+      if (CONTACT_PHP_ENDPOINT) {
+        // Backend SMTP propio (cuando el sitio esté en hosting con PHP).
+        const res = await fetch(CONTACT_PHP_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({
+            name: data.name,
+            email: data.email,
+            message: data.message,
+          }),
+        })
+        const result = await res.json().catch(() => ({ success: false }))
+        delivered = res.ok && result.success === true
+      } else if (isWeb3FormsConfigured) {
+        // Servicio Web3Forms (funciona sobre hosting estático como GitHub Pages).
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_ACCESS_KEY,
+            subject: 'Nueva consulta desde la web de PHIR-IT',
+            from_name: 'Web PHIR-IT',
+            name: data.name,
+            email: data.email,
+            message: data.message,
+          }),
+        })
+        const result = await res.json()
+        delivered = result.success === true
+      }
 
-      if (result.success) {
+      if (delivered) {
         setStatus('success')
         reset()
       } else {

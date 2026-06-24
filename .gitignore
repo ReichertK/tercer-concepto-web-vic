@@ -16,6 +16,9 @@ dist-ssr
 .env
 .env.*
 
+# Backend: credenciales reales del SMTP (no subir al repo)
+backend/config.php
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
