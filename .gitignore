@@ -16,10 +16,11 @@ dist-ssr
 .env
 .env.*
 
-# Backend C#: config real con la contraseña y compilados de .NET (no subir)
-backend/appsettings.json
-backend/bin/
-backend/obj/
+# Backend: config real con la contraseña y compilados (no subir al repo)
+backend/csharp/appsettings.json
+backend/csharp/bin/
+backend/csharp/obj/
+backend/php/config.php
 
 # Editor directories and files
 .vscode/*

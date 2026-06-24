@@ -110,26 +110,56 @@ ruta correcta tanto en desarrollo como en producción.
 
 ## A) Formulario de contacto
 
-El formulario (`src/components/ui/ContactForm.tsx`) valida los datos y muestra los
-estados de carga, éxito y error. El correo se manda con un backend propio hecho en
-**C# (ASP.NET Core)**, que está en la carpeta `backend/`.
+El formulario (`src/components/ui/ContactForm.tsx`) valida los datos, muestra los
+estados de carga, éxito y error, y manda cada consulta por mail a
+**contacto@phir-it.ar**.
 
-Mientras la web esté en GitHub Pages (hosting estático), el backend no corre, así
-que el formulario abre el correo del visitante con el mensaje ya escrito hacia
-**contacto@phir-it.ar**. Cuando el sitio se mude a un servidor con .NET, el
-formulario pasa a enviar solo.
+El envío lo hace un backend propio. Dejé **dos versiones listas** en la carpeta
+`backend/` para que elijan la que mejor les venga según dónde vayan a alojar el
+sitio:
 
-### Cómo dejar el backend andando
+- **`backend/csharp/`** → versión en **C# (ASP.NET Core)**. Es la ideal si tienen
+  un servidor con **.NET** (hosting Windows, VPS o server propio). El equipo trabaja
+  en C#, así que esta es la más cómoda para mantener.
+- **`backend/php/`** → versión en **PHP**, sin librerías. Anda en casi cualquier
+  hosting compartido (Ferozo incluido) sin instalar nada. Es la más simple de subir
+  si el sitio queda en un hosting PHP.
 
-1. Subir/publicar la carpeta `backend/` en un servidor con .NET 8.
-2. Copiar `backend/appsettings.example.json` a `backend/appsettings.json` y cargar
-   los datos del SMTP (host, puerto, usuario y contraseña) que da el panel de
-   Ferozo. Ese archivo con la contraseña queda solo en el servidor, no se sube al
-   repo (ya está en `.gitignore`).
+Las dos hacen lo mismo y reciben los mismos datos, así que el frontend funciona con
+cualquiera: solo cambia la URL.
+
+> Mientras la web esté en GitHub Pages (que es estático y no corre backend), el
+> formulario abre el correo del visitante con el mensaje ya escrito hacia
+> contacto@phir-it.ar. En cuanto se publique uno de los backends y se cargue su URL,
+> el formulario pasa a enviar solo.
+
+### ¿Cuál elijo?
+
+- ¿El sitio va a un hosting **PHP / Ferozo compartido**? → usá **PHP**.
+- ¿Tienen un servidor **.NET**? → usá **C#**.
+
+Cualquiera de los dos, el paso final es el mismo: poner la URL del backend en la
+constante `CONTACT_API_ENDPOINT` de `src/components/ui/ContactForm.tsx`, hacer
+`npm run build` y desplegar.
+
+### Si eligen PHP
+
+1. Subir la carpeta `backend/php/` al hosting.
+2. Copiar `config.example.php` a `config.php` y completar los datos del SMTP que da
+   el panel de Ferozo. El `config.php` con la contraseña queda solo en el servidor
+   (ya está en `.gitignore`).
+3. En `ContactForm.tsx`, poner en `CONTACT_API_ENDPOINT` la URL del archivo, por
+   ejemplo `https://www.phir-it.ar/php/contact.php`.
+
+### Si eligen C#
+
+1. Publicar la carpeta `backend/csharp/` en un servidor con .NET 8.
+2. Copiar `appsettings.example.json` a `appsettings.json` y completar los datos del
+   SMTP. Ese archivo con la contraseña queda solo en el servidor (ya está en
+   `.gitignore`).
 3. Levantarlo con `dotnet run` o publicarlo en el hosting .NET.
-4. En `src/components/ui/ContactForm.tsx`, poner la URL del backend en
-   `CONTACT_API_ENDPOINT` (por ejemplo `https://www.phir-it.ar/contact`), hacer
-   `npm run build` y desplegar.
+4. En `ContactForm.tsx`, poner en `CONTACT_API_ENDPOINT` la URL del backend, por
+   ejemplo `https://www.phir-it.ar/contact`.
 
 Cada envío llega como un mail a **contacto@phir-it.ar** con el nombre, el correo y
 el mensaje de quien completó el formulario.

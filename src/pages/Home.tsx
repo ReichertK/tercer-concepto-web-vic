@@ -15,6 +15,8 @@ const clientes = [
   { logo: '/img/clientes/amoemra.jpg', name: 'Amoemra' },
   { logo: '/img/clientes/san-camilo.png', name: 'Centro Médico San Camilo' },
   { logo: '/img/clientes/hospital-modelo.jpg', name: 'Hospital Privado Modelo' },
+  { logo: '/img/clientes/iart-instituto-rinon.jpg', name: 'IART - Instituto del Riñón' },
+  { logo: '/img/clientes/consultorios-medicos-buenos-aires.jpg', name: 'Consultorios Médicos Buenos Aires' },
 ]
 
 const carteles = [
@@ -152,7 +154,7 @@ export default function Home() {
             </div>
           </AnimatedSection>
           <AnimatedSection delay={0.1}>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
               {clientes.map((cliente) => (
                 <div
                   key={cliente.name}
