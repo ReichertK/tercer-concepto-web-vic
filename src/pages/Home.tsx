@@ -158,12 +158,12 @@ export default function Home() {
               {clientes.map((cliente) => (
                 <div
                   key={cliente.name}
-                  className="flex items-center justify-center rounded-xl border border-brand-border bg-white p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium dark:border-gray-800 dark:bg-gray-900"
+                  className="flex items-center justify-center rounded-xl border border-brand-border bg-white p-4 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium dark:border-gray-800 dark:bg-gray-900"
                 >
                   <img
                     src={asset(cliente.logo)}
                     alt={cliente.name}
-                    className="h-16 w-full object-contain"
+                    className="h-24 w-full object-contain"
                     loading="lazy"
                     decoding="async"
                   />

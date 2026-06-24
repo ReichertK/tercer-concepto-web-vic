@@ -96,7 +96,6 @@ El envío lo hace un backend propio. Dejé **dos** en `backend/`, hacen exactame
 
 Los dos reciben el mismo JSON. El frontend no distingue cuál hay del otro lado: solo le cambiás la URL.
 
-
 ### ¿Cuál?
 
 - Hosting PHP / Ferozo compartido → PHP.
