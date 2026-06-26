@@ -1,7 +1,8 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import HCaptcha from '@hcaptcha/react-hcaptcha'
 import { Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
 
 const NAME_REGEX = /^[\p{L}\p{M}'.\-\s]+$/u
@@ -39,6 +40,12 @@ const CONTACT_EMAIL = 'contacto@phir-it.ar'
 // (ej. 'https://www.phir-it.ar/contact' o '.../php/contact.php').
 const CONTACT_API_ENDPOINT = ''
 
+// Site key de hCaptcha (es publica). Esta es la de PRUEBA de hCaptcha y siempre valida.
+// En produccion saca tu propia site key en hcaptcha.com y pone el secret en el backend
+// (C#/PHP) para validar el token. Podes sobrescribirla con VITE_HCAPTCHA_SITE_KEY.
+const HCAPTCHA_SITE_KEY =
+  import.meta.env.VITE_HCAPTCHA_SITE_KEY ?? '10000000-ffff-ffff-ffff-000000000001'
+
 function openMailClient(data: ContactFormData) {
   const subject = encodeURIComponent('Nueva consulta desde la web de PHIR-IT')
   const body = encodeURIComponent(
@@ -49,6 +56,10 @@ function openMailClient(data: ContactFormData) {
 
 export default function ContactForm() {
   const [status, setStatus] = useState<FormStatus>('idle')
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const [captchaError, setCaptchaError] = useState(false)
+  const honeypotRef = useRef<HTMLInputElement>(null)
+  const captchaRef = useRef<HCaptcha>(null)
 
   const {
     register,
@@ -62,10 +73,24 @@ export default function ContactForm() {
   })
 
   const onSubmit = async (data: ContactFormData) => {
+    // Campo trampa: si viene completo es un bot. Hacemos como que salio bien y cortamos.
+    if (honeypotRef.current?.value) {
+      setStatus('success')
+      reset()
+      return
+    }
+
+    // Sin backend todavia: abrimos el correo del visitante (el captcha no aplica al mailto).
     if (!CONTACT_API_ENDPOINT) {
       openMailClient(data)
       setStatus('fallback')
       reset()
+      return
+    }
+
+    // Con backend activo: pedimos el captcha antes de mandar.
+    if (!captchaToken) {
+      setCaptchaError(true)
       return
     }
 
@@ -81,6 +106,7 @@ export default function ContactForm() {
           name: data.name,
           email: data.email,
           message: data.message,
+          'h-captcha-response': captchaToken,
         }),
       })
       const result = await res.json().catch(() => ({ success: false }))
@@ -97,6 +123,9 @@ export default function ContactForm() {
       openMailClient(data)
       setStatus('fallback')
       reset()
+    } finally {
+      captchaRef.current?.resetCaptcha()
+      setCaptchaToken(null)
     }
   }
 
@@ -144,6 +173,15 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
+      <input
+        ref={honeypotRef}
+        type="text"
+        name="botcheck"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="hidden"
+      />
       {status === 'error' && (
         <div className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-900/20 dark:text-red-400">
           <AlertCircle size={18} />
@@ -194,6 +232,25 @@ export default function ContactForm() {
         />
         {errors.message && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{errors.message.message}</p>}
       </div>
+
+      {CONTACT_API_ENDPOINT ? (
+        <div>
+          <HCaptcha
+            ref={captchaRef}
+            sitekey={HCAPTCHA_SITE_KEY}
+            onVerify={(token) => {
+              setCaptchaToken(token)
+              setCaptchaError(false)
+            }}
+            onExpire={() => setCaptchaToken(null)}
+          />
+          {captchaError && (
+            <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+              Por favor, confirma que no sos un robot.
+            </p>
+          )}
+        </div>
+      ) : null}
 
       <button
         type="submit"
