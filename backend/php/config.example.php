@@ -26,4 +26,8 @@ return [
 
     // Dominio del sitio (para permitir las peticiones del formulario)
     'allowed_origin' => 'https://www.phir-it.ar',
+
+    // Secret de hCaptcha (lo da hcaptcha.com, va de la mano con la site key del frontend).
+    // Dejalo vacio para no exigir captcha. En produccion, carga el secret real.
+    'hcaptcha_secret' => '',
 ];

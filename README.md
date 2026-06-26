@@ -118,45 +118,60 @@ El último paso es igual para los dos: poné la URL del backend en la constante 
 
 Cada envío cae como un mail a contacto@phir-it.ar con nombre, correo y mensaje de quien completó.
 
+### Anti-spam: campo trampa + hCaptcha
+
+El formulario trae dos defensas contra el spam, y ninguna molesta a quien escribe en serio:
+
+- **Campo trampa (honeypot).** Un campo invisible que las personas no ven ni completan, pero los bots sí. Si viene cargado, lo tomamos como bot y descartamos el envío sin mandar nada. Está siempre activo, no hay que tocar nada.
+- **hCaptcha.** El clásico "confirmá que no sos un robot". Aparece solo cuando el backend está conectado (cuando `CONTACT_API_ENDPOINT` tiene una URL); mientras el form cae al `mailto`, no se muestra porque no hace falta.
+
+Para que el hCaptcha valide de verdad necesitás **un par de claves** de hCaptcha, de la misma cuenta:
+
+- la **site key** (es pública, va en el frontend), y
+- el **secret** (es privado, va en el backend).
+
+Se sacan así:
+
+1. Creá una cuenta gratis en [hcaptcha.com](https://www.hcaptcha.com), agregá el sitio (`phir-it.ar`) y copiá la **site key** y el **secret**.
+2. **Frontend:** abrí `src/components/ui/ContactForm.tsx` y pegá la site key en la constante `HCAPTCHA_SITE_KEY` (o pasala como variable `VITE_HCAPTCHA_SITE_KEY` al compilar). Viene con la site key de **prueba** de hCaptcha, que siempre da por válido, así la ves andar; en producción cambiala por la real.
+3. **Backend:** cargá el **secret** según el backend que uses:
+   - PHP → `hcaptcha_secret` en `config.php`.
+   - C# → `HCaptcha:Secret` en `appsettings.json`.
+
+   Si dejás el secret vacío, el backend no valida el captcha y queda solo el campo trampa. Para producción, **cargá el secret**.
+
+La site key y el secret tienen que ser del mismo par. Si los mezclás (uno de una cuenta y otro de otra), hCaptcha rechaza todo y no entra ningún mensaje.
+
 ## Deploy
 
-Primero compilás:
+Hay dos destinos y no se pisan:
 
-```bash
-npm run build
-```
+- **GitHub Pages** (la demo online). Se publica solo en cada `git push` a `master`, con el workflow de `.github/workflows/deploy.yml`. No tenés que hacer nada.
+- **El hosting propio** (phir-it.ar, en Ferozo / cPanel / DonWeb). Es el que importa para producción y va con un build aparte. Seguí leyendo.
 
-Eso verifica los tipos (`tsc -b`) y arma el build optimizado con Vite. Sale todo en `dist/`.
+### Subir al hosting (cPanel / Ferozo / Apache)
 
-Esa carpeta `dist/` es el sitio entero ya minificado, con assets optimizados. **Es lo único que subís al hosting.** `src/`, `node_modules/` y los configs no van: son para desarrollar.
+El sitio es una SPA: lo único que subís es la carpeta `dist/` compilada. `src/`, `node_modules/` y los configs no van, son para desarrollar.
 
-Chequealo local antes de publicar:
+1. Compilá para la raíz del dominio:
 
-```bash
-npm run preview
-```
-
-### cPanel / Apache
-
-1. Corré `npm run build`.
-2. Entrá al Administrador de archivos de cPanel.
-3. Subí **el contenido** de `dist/` (no la carpeta en sí) dentro de `public_html/` o el subdirectorio del dominio.
-4. SPA + recarga = 404, salvo que redirijas todo a `index.html`. Creá un `.htaccess` en `public_html/`:
-
-   ```apache
-   <IfModule mod_rewrite.c>
-     RewriteEngine On
-     RewriteBase /
-     RewriteRule ^index\.html$ - [L]
-     RewriteCond %{REQUEST_FILENAME} !-f
-     RewriteCond %{REQUEST_FILENAME} !-d
-     RewriteRule . /index.html [L]
-   </IfModule>
+   ```bash
+   npm run build:deploy
    ```
 
-   Sin esa regla, recargar `/contacto` te tira 404.
+   Ese comando verifica los tipos, arma el build con las rutas apuntando a la raíz (`/`) y mete el `.htaccess` solo. El `npm run build` común usa la ruta de GitHub Pages, así que para el hosting usá **siempre** `build:deploy`.
 
-¿No va en la raíz del dominio sino en `tudominio.com/sitio/`? Ajustá `base: '/sitio/'` en `vite.config.ts` y recompilá.
+2. Si querés, chequealo local antes de subir:
+
+   ```bash
+   npm run preview
+   ```
+
+3. Entrá al Administrador de archivos del hosting y subí **el contenido** de `dist/` (no la carpeta en sí) dentro de `public_html/`. Que el `.htaccess`, el `index.html` y la carpeta `assets/` queden directos en la raíz.
+
+El `.htaccess` ya viene en el build y se encarga del ruteo de la SPA (sin él, recargar `/contacto` tira 404), más la compresión y la caché. No hay que crear nada a mano.
+
+¿Va en un subdirectorio (`tudominio.com/sitio/`) en vez de la raíz? Compilá con `npx vite build --base=/sitio/` en lugar de `build:deploy`.
 
 ### Vercel / Netlify
 
@@ -169,6 +184,17 @@ Detectan Vite y resuelven el ruteo SPA sin que toques nada.
 5. Publicá. Cada `git push` redeploya solo.
 
 En Netlify, si querés algo manual, arrastrás `dist/` a su panel y ya. El ruteo SPA viene resuelto.
+
+### Lo que hay que dejar listo (checklist)
+
+Para que el sitio quede 100% funcionando en el hosting:
+
+1. **Backend.** Subí uno de los dos (`backend/php/` o `backend/csharp/`), copiá su archivo de config de ejemplo al real y cargá el SMTP. (Ver [Formulario de contacto](#formulario-de-contacto).)
+2. **hCaptcha.** Pegá la **site key** en el frontend y el **secret** en la config del backend. (Ver [Anti-spam](#anti-spam-campo-trampa--hcaptcha).)
+3. **Conectar el form.** En `src/components/ui/ContactForm.tsx`, poné la URL del backend en `CONTACT_API_ENDPOINT`.
+4. **Compilar y subir.** Corré `npm run build:deploy` y subí el contenido de `dist/` a `public_html/`.
+
+Con esos cuatro pasos, el formulario manda los mails, el captcha valida y el ruteo de la SPA anda.
 
 ## Modo oscuro
 

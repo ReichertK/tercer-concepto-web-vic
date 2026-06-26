@@ -1,6 +1,8 @@
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
+using System.Net.Http.Json;
+using System.Text.Json.Serialization;
 
 // Backend del form de contacto en C# (ASP.NET Core).
 // Recibe lo que carga la gente y lo manda por mail con el SMTP propio. Nada más.
@@ -27,10 +29,12 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 app.UseCors();
 
-app.MapPost("/contact", async (ContactRequest req, IConfiguration config) =>
+app.MapPost("/contact", async (ContactRequest req, IConfiguration config, IHttpClientFactory httpClientFactory) =>
 {
     // Campo trampa. Si vino completo es un bot: devolvemos ok y no mandamos nada.
     if (!string.IsNullOrWhiteSpace(req.Botcheck))
@@ -48,6 +52,32 @@ app.MapPost("/contact", async (ContactRequest req, IConfiguration config) =>
     if (name.Length is < 2 or > 80 || !emailOk || message.Length is < 10 or > 1000)
     {
         return Results.BadRequest(new { success = false, message = "Datos inválidos." });
+    }
+
+    // hCaptcha. Si hay un secret cargado, validamos el token contra hCaptcha antes
+    // de mandar. Sin secret, no se exige (queda solo el campo trampa).
+    var hcaptchaSecret = config["HCaptcha:Secret"];
+    if (!string.IsNullOrWhiteSpace(hcaptchaSecret))
+    {
+        if (string.IsNullOrWhiteSpace(req.HCaptchaResponse))
+        {
+            return Results.BadRequest(new { success = false, message = "Falta la verificación del captcha." });
+        }
+
+        var http = httpClientFactory.CreateClient();
+        var verify = await http.PostAsync(
+            "https://api.hcaptcha.com/siteverify",
+            new FormUrlEncodedContent(new Dictionary<string, string>
+            {
+                ["secret"] = hcaptchaSecret,
+                ["response"] = req.HCaptchaResponse,
+            }));
+
+        var verifyResult = await verify.Content.ReadFromJsonAsync<HCaptchaResult>();
+        if (verifyResult is null || !verifyResult.Success)
+        {
+            return Results.BadRequest(new { success = false, message = "No pudimos validar el captcha." });
+        }
     }
 
     var smtp = config.GetSection("Smtp");
@@ -98,4 +128,11 @@ static bool IsValidEmail(string email)
     }
 }
 
-record ContactRequest(string? Name, string? Email, string? Message, string? Botcheck);
+record ContactRequest(
+    string? Name,
+    string? Email,
+    string? Message,
+    string? Botcheck,
+    [property: JsonPropertyName("h-captcha-response")] string? HCaptchaResponse);
+
+record HCaptchaResult([property: JsonPropertyName("success")] bool Success);

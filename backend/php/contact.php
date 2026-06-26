@@ -83,6 +83,18 @@ if ($errors) {
     exit;
 }
 
+// hCaptcha. Si hay un secret cargado en config, validamos el token contra hCaptcha
+// antes de mandar nada. Sin secret, no se exige (queda solo el campo trampa).
+$hcaptchaSecret = (string) ($cfg['hcaptcha_secret'] ?? '');
+if ($hcaptchaSecret !== '') {
+    $captcha = (string) ($data['h-captcha-response'] ?? '');
+    if ($captcha === '' || !verify_hcaptcha($hcaptchaSecret, $captcha)) {
+        http_response_code(422);
+        echo json_encode(['success' => false, 'message' => 'No pudimos validar el captcha. Proba de nuevo.']);
+        exit;
+    }
+}
+
 $subject = 'Nueva consulta desde la web de PHIR-IT';
 $bodyText = "Nombre: {$name}\n"
     . "Email: {$email}\n\n"
@@ -95,6 +107,44 @@ if ($ok) {
 } else {
     http_response_code(502);
     echo json_encode(['success' => false, 'message' => 'No se pudo enviar el mensaje.', 'detail' => $detail]);
+}
+
+/**
+ * Valida el token de hCaptcha contra su API. Devuelve true solo si el captcha es valido.
+ * Usa cURL si esta disponible y, si no, cae a un stream context (anda igual en Ferozo).
+ */
+function verify_hcaptcha(string $secret, string $token): bool
+{
+    $payload = http_build_query(['secret' => $secret, 'response' => $token]);
+
+    if (function_exists('curl_init')) {
+        $ch = curl_init('https://api.hcaptcha.com/siteverify');
+        curl_setopt_array($ch, [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => $payload,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 15,
+        ]);
+        $response = curl_exec($ch);
+        curl_close($ch);
+    } else {
+        $context = stream_context_create([
+            'http' => [
+                'method'  => 'POST',
+                'header'  => 'Content-Type: application/x-www-form-urlencoded',
+                'content' => $payload,
+                'timeout' => 15,
+            ],
+        ]);
+        $response = @file_get_contents('https://api.hcaptcha.com/siteverify', false, $context);
+    }
+
+    if (!is_string($response) || $response === '') {
+        return false;
+    }
+    $result = json_decode($response, true);
+
+    return is_array($result) && ($result['success'] ?? false) === true;
 }
 
 /**
