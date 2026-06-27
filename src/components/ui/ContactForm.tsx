@@ -34,17 +34,34 @@ type FormStatus = 'idle' | 'submitting' | 'success' | 'error' | 'fallback'
 
 const CONTACT_EMAIL = 'contacto@phir-it.ar'
 
-// URL del backend que manda el mail (sirve el de C# o el de PHP, da igual).
-// Mientras esté vacío, el form abre el correo del visitante con el mensaje ya armado.
-// Cuando publiques un backend, pegá acá su dirección
-// (ej. 'https://www.phir-it.ar/contact' o '.../php/contact.php').
-const CONTACT_API_ENDPOINT = ''
+// La config que cambia seguido (endpoint del backend y site key de hCaptcha) vive en
+// public/config.js, que queda como archivo suelto en el server. Así se edita por FTP
+// sin recompilar. Si no hay nada ahí, caemos a las variables de build. Ver el README.
+declare global {
+  interface Window {
+    __PHIRIT_CONFIG__?: {
+      contactEndpoint?: string
+      hcaptchaSiteKey?: string
+    }
+  }
+}
 
-// Site key de hCaptcha (es publica). Esta es la de PRUEBA de hCaptcha y siempre valida.
-// En produccion saca tu propia site key en hcaptcha.com y pone el secret en el backend
-// (C#/PHP) para validar el token. Podes sobrescribirla con VITE_HCAPTCHA_SITE_KEY.
+const runtimeConfig = typeof window !== 'undefined' ? window.__PHIRIT_CONFIG__ : undefined
+
+// URL del backend que manda el mail (sirve el de C# o el de PHP, da igual).
+// Si queda vacío, el form abre el correo del visitante con el mensaje ya armado.
+const CONTACT_API_ENDPOINT =
+  runtimeConfig?.contactEndpoint || import.meta.env.VITE_CONTACT_ENDPOINT || ''
+
+// Site key PÚBLICA de hCaptcha. Vacío = captcha apagado (el form manda igual).
+// Cuando tengas la real de hcaptcha.com, la ponés en config.js y se prende sola.
 const HCAPTCHA_SITE_KEY =
-  import.meta.env.VITE_HCAPTCHA_SITE_KEY ?? '10000000-ffff-ffff-ffff-000000000001'
+  runtimeConfig?.hcaptchaSiteKey || import.meta.env.VITE_HCAPTCHA_SITE_KEY || ''
+
+// La de prueba de hCaptcha valida siempre pero NO sirve en producción, así que si
+// quedó esa la tratamos como "sin captcha" para no romper los envíos.
+const HCAPTCHA_TEST_KEY = '10000000-ffff-ffff-ffff-000000000001'
+const CAPTCHA_ENABLED = HCAPTCHA_SITE_KEY !== '' && HCAPTCHA_SITE_KEY !== HCAPTCHA_TEST_KEY
 
 function openMailClient(data: ContactFormData) {
   const subject = encodeURIComponent('Nueva consulta desde la web de PHIR-IT')
@@ -88,8 +105,8 @@ export default function ContactForm() {
       return
     }
 
-    // Con backend activo: pedimos el captcha antes de mandar.
-    if (!captchaToken) {
+    // Con backend activo y captcha prendido: pedimos el captcha antes de mandar.
+    if (CAPTCHA_ENABLED && !captchaToken) {
       setCaptchaError(true)
       return
     }
@@ -106,7 +123,7 @@ export default function ContactForm() {
           name: data.name,
           email: data.email,
           message: data.message,
-          'h-captcha-response': captchaToken,
+          'h-captcha-response': captchaToken ?? '',
         }),
       })
       const result = await res.json().catch(() => ({ success: false }))
@@ -115,11 +132,21 @@ export default function ContactForm() {
         setStatus('success')
         reset()
       } else {
+        // El backend contestó pero rechazó el envío. Dejamos el motivo en consola
+        // para poder diagnosticar (status 4xx/5xx, success false, etc.).
+        console.error(
+          '[contacto] el backend rechazó el envío. status:',
+          res.status,
+          '· respuesta:',
+          result,
+        )
         openMailClient(data)
         setStatus('fallback')
         reset()
       }
-    } catch {
+    } catch (err) {
+      // Ni siquiera pudimos hablar con el backend: CORS, URL mal escrita o caído.
+      console.error('[contacto] no se pudo contactar al backend (CORS / URL / caído):', err)
       openMailClient(data)
       setStatus('fallback')
       reset()
@@ -233,7 +260,7 @@ export default function ContactForm() {
         {errors.message && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{errors.message.message}</p>}
       </div>
 
-      {CONTACT_API_ENDPOINT ? (
+      {CONTACT_API_ENDPOINT && CAPTCHA_ENABLED ? (
         <div>
           <HCaptcha
             ref={captchaRef}

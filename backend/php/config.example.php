@@ -24,8 +24,10 @@ return [
     'mail_from_name' => 'Web PHIR-IT',
     'mail_to'        => 'contacto@phir-it.ar',
 
-    // Dominio del sitio (para permitir las peticiones del formulario)
-    'allowed_origin' => 'https://www.phir-it.ar',
+    // Dominio del sitio (para permitir las peticiones del formulario).
+    // El backend ya contempla la variante con y sin www, así que con esto alcanza.
+    // Si tuvieras más de un dominio, separalos con coma.
+    'allowed_origin' => 'https://phir-it.ar',
 
     // Secret de hCaptcha (lo da hcaptcha.com, va de la mano con la site key del frontend).
     // Dejalo vacio para no exigir captcha. En produccion, carga el secret real.

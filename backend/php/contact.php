@@ -23,11 +23,25 @@ if (!is_file($configPath)) {
 /** @var array<string,mixed> $cfg */
 $cfg = require $configPath;
 
-// CORS: solo dejamos entrar al dominio del sitio.
+// CORS: dejamos entrar al dominio del sitio. allowed_origin puede ser uno o varios
+// separados por coma; además aceptamos la variante con y sin "www." de cada uno,
+// así no nos peleamos con eso (la web puede quedar en phir-it.ar o www.phir-it.ar).
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-$allowedOrigin = (string) ($cfg['allowed_origin'] ?? '');
-if ($allowedOrigin !== '' && $origin === $allowedOrigin) {
-    header('Access-Control-Allow-Origin: ' . $allowedOrigin);
+$allowedOrigins = [];
+foreach (explode(',', (string) ($cfg['allowed_origin'] ?? '')) as $candidate) {
+    $candidate = trim($candidate);
+    if ($candidate === '') {
+        continue;
+    }
+    $allowedOrigins[] = $candidate;
+    if (stripos($candidate, '://www.') !== false) {
+        $allowedOrigins[] = str_ireplace('://www.', '://', $candidate);
+    } else {
+        $allowedOrigins[] = preg_replace('#://#', '://www.', $candidate, 1);
+    }
+}
+if ($origin !== '' && in_array($origin, $allowedOrigins, true)) {
+    header('Access-Control-Allow-Origin: ' . $origin);
     header('Vary: Origin');
     header('Access-Control-Allow-Methods: POST, OPTIONS');
     header('Access-Control-Allow-Headers: Content-Type');

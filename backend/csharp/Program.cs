@@ -16,15 +16,23 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var allowedOrigin = builder.Configuration["Smtp:AllowedOrigin"];
+// allowed_origin puede ser uno o varios separados por coma. Para cada uno sumamos la
+// variante con y sin "www.", así no importa si la web quedó en phir-it.ar o www.phir-it.ar.
+var allowedOrigins = (builder.Configuration["Smtp:AllowedOrigin"] ?? string.Empty)
+    .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+    .SelectMany(o => o.Contains("://www.")
+        ? new[] { o, o.Replace("://www.", "://") }
+        : new[] { o, o.Replace("://", "://www.") })
+    .Distinct()
+    .ToArray();
 
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        if (!string.IsNullOrWhiteSpace(allowedOrigin))
+        if (allowedOrigins.Length > 0)
         {
-            policy.WithOrigins(allowedOrigin).AllowAnyHeader().AllowAnyMethod();
+            policy.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod();
         }
     });
 });

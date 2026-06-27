@@ -22,6 +22,10 @@
         }
       })()
     </script>
+
+    <!-- Config editable en el server (endpoint del form + site key de hCaptcha).
+         Se carga antes del sitio para que el form la tome. Vite reemplaza %BASE_URL%. -->
+    <script src="%BASE_URL%config.js"></script>
   </head>
   <body class="bg-white text-gray-900 dark:bg-brand-dark dark:text-gray-100 antialiased">
     <div id="root"></div>
