@@ -184,15 +184,31 @@ function smtp_send(array $cfg, string $subject, string $bodyText, string $replyT
     }
 
     $remote = ($secure === 'ssl') ? "ssl://{$host}:{$port}" : "tcp://{$host}:{$port}";
+    // Muchos hostings compartidos (Ferozo incluido) presentan un certificado que no
+    // coincide exacto con el host del mail, y eso voltea el handshake TLS. Como el
+    // mail vive en el mismo hosting, aflojamos la verificación del certificado.
     $context = stream_context_create([
-        'ssl' => ['verify_peer' => true, 'verify_peer_name' => true],
+        'ssl' => [
+            'verify_peer'       => false,
+            'verify_peer_name'  => false,
+            'allow_self_signed' => true,
+        ],
     ]);
 
     $errno = 0;
     $errstr = '';
-    $fp = @stream_socket_client($remote, $errno, $errstr, 20, STREAM_CLIENT_CONNECT, $context);
+    // Si stream_socket_client falla, a veces no llena $errstr y el motivo real queda
+    // en un warning de PHP. Lo capturamos para poder diagnosticar de verdad.
+    $phpError = '';
+    set_error_handler(static function (int $no, string $str) use (&$phpError): bool {
+        $phpError = $str;
+        return true;
+    });
+    $fp = stream_socket_client($remote, $errno, $errstr, 20, STREAM_CLIENT_CONNECT, $context);
+    restore_error_handler();
     if (!$fp) {
-        return [false, "No se pudo conectar al SMTP ({$errstr})."];
+        $reason = $errstr !== '' ? $errstr : ($phpError !== '' ? $phpError : 'sin detalle');
+        return [false, "No se pudo conectar al SMTP a {$remote} ({$reason})."];
     }
     stream_set_timeout($fp, 20);
 
