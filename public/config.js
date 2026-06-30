@@ -16,5 +16,5 @@ window.__PHIRIT_CONFIG__ = {
 
   // Site key PÚBLICA de Cloudflare Turnstile (la real del panel de Cloudflare).
   // Vacío = usa la de prueba, que NO sirve en producción.
-  turnstileSiteKey: '',
+  turnstileSiteKey: '0x4AAAAAADteqNooJsimqAtn',
 }
