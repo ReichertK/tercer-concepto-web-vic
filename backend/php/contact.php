@@ -97,12 +97,12 @@ if ($errors) {
     exit;
 }
 
-// hCaptcha. Si hay un secret cargado en config, validamos el token contra hCaptcha
-// antes de mandar nada. Sin secret, no se exige (queda solo el campo trampa).
-$hcaptchaSecret = (string) ($cfg['hcaptcha_secret'] ?? '');
-if ($hcaptchaSecret !== '') {
-    $captcha = (string) ($data['h-captcha-response'] ?? '');
-    if ($captcha === '' || !verify_hcaptcha($hcaptchaSecret, $captcha)) {
+// Cloudflare Turnstile. Si hay un secret cargado en config, validamos el token contra
+// Cloudflare antes de mandar nada. Sin secret, no se exige (queda solo el campo trampa).
+$turnstileSecret = (string) ($cfg['turnstile_secret'] ?? '');
+if ($turnstileSecret !== '') {
+    $captcha = (string) ($data['cf-turnstile-response'] ?? '');
+    if ($captcha === '' || !verify_turnstile($turnstileSecret, $captcha)) {
         http_response_code(422);
         echo json_encode(['success' => false, 'message' => 'No pudimos validar el captcha. Proba de nuevo.']);
         exit;
@@ -124,15 +124,15 @@ if ($ok) {
 }
 
 /**
- * Valida el token de hCaptcha contra su API. Devuelve true solo si el captcha es valido.
+ * Valida el token de Cloudflare Turnstile contra su API. Devuelve true solo si es valido.
  * Usa cURL si esta disponible y, si no, cae a un stream context (anda igual en Ferozo).
  */
-function verify_hcaptcha(string $secret, string $token): bool
+function verify_turnstile(string $secret, string $token): bool
 {
     $payload = http_build_query(['secret' => $secret, 'response' => $token]);
 
     if (function_exists('curl_init')) {
-        $ch = curl_init('https://api.hcaptcha.com/siteverify');
+        $ch = curl_init('https://challenges.cloudflare.com/turnstile/v0/siteverify');
         curl_setopt_array($ch, [
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => $payload,
@@ -150,7 +150,7 @@ function verify_hcaptcha(string $secret, string $token): bool
                 'timeout' => 15,
             ],
         ]);
-        $response = @file_get_contents('https://api.hcaptcha.com/siteverify', false, $context);
+        $response = @file_get_contents('https://challenges.cloudflare.com/turnstile/v0/siteverify', false, $context);
     }
 
     if (!is_string($response) || $response === '') {

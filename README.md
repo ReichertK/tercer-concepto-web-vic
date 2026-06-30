@@ -118,29 +118,29 @@ El último paso es igual para los dos: poné la URL del backend en la constante 
 
 Cada envío cae como un mail a contacto@phir-it.ar con nombre, correo y mensaje de quien completó.
 
-### Anti-spam: campo trampa + hCaptcha
+### Anti-spam: campo trampa + Cloudflare Turnstile
 
 El formulario trae dos defensas contra el spam, y ninguna molesta a quien escribe en serio:
 
 - **Campo trampa (honeypot).** Un campo invisible que las personas no ven ni completan, pero los bots sí. Si viene cargado, lo tomamos como bot y descartamos el envío sin mandar nada. Está siempre activo, no hay que tocar nada.
-- **hCaptcha.** El clásico "confirmá que no sos un robot". Aparece solo cuando el backend está conectado (cuando `CONTACT_API_ENDPOINT` tiene una URL); mientras el form cae al `mailto`, no se muestra porque no hace falta.
+- **Cloudflare Turnstile.** El reemplazo gratis (e ilimitado) del clásico "confirmá que no sos un robot". Casi siempre resuelve solo, sin rompecabezas. Aparece solo cuando el backend está conectado (cuando `CONTACT_API_ENDPOINT` tiene una URL); mientras el form cae al `mailto`, no se muestra porque no hace falta.
 
-Para que el hCaptcha valide de verdad necesitás **un par de claves** de hCaptcha, de la misma cuenta:
+Para que Turnstile valide de verdad necesitás **un par de claves** de Cloudflare, del mismo sitio:
 
 - la **site key** (es pública, va en el frontend), y
 - el **secret** (es privado, va en el backend).
 
 Se sacan así:
 
-1. Creá una cuenta gratis en [hcaptcha.com](https://www.hcaptcha.com), agregá el sitio (`phir-it.ar`) y copiá la **site key** y el **secret**.
-2. **Frontend:** abrí `src/components/ui/ContactForm.tsx` y pegá la site key en la constante `HCAPTCHA_SITE_KEY` (o pasala como variable `VITE_HCAPTCHA_SITE_KEY` al compilar). Viene con la site key de **prueba** de hCaptcha, que siempre da por válido, así la ves andar; en producción cambiala por la real.
+1. Entrá a [dash.cloudflare.com](https://dash.cloudflare.com) (la cuenta gratis alcanza), buscá **Turnstile**, agregá el sitio (`phir-it.ar`) y copiá la **site key** y el **secret**. No hace falta tener el dominio en Cloudflare ni cambiar DNS.
+2. **Frontend:** abrí `src/components/ui/ContactForm.tsx` y pegá la site key en la constante `TURNSTILE_SITE_KEY` (o pasala como variable `VITE_TURNSTILE_SITE_KEY` al compilar). Viene con la site key de **prueba** de Cloudflare, que siempre da por válido, así la ves andar; en producción cambiala por la real.
 3. **Backend:** cargá el **secret** según el backend que uses:
-   - PHP → `hcaptcha_secret` en `config.php`.
-   - C# → `HCaptcha:Secret` en `appsettings.json`.
+   - PHP → `turnstile_secret` en `config.php`.
+   - C# → `Turnstile:Secret` en `appsettings.json`.
 
    Si dejás el secret vacío, el backend no valida el captcha y queda solo el campo trampa. Para producción, **cargá el secret**.
 
-La site key y el secret tienen que ser del mismo par. Si los mezclás (uno de una cuenta y otro de otra), hCaptcha rechaza todo y no entra ningún mensaje.
+La site key y el secret tienen que ser del mismo sitio de Turnstile. Si los mezclás, Cloudflare rechaza todo y no entra ningún mensaje.
 
 ## Deploy
 
@@ -190,7 +190,7 @@ En Netlify, si querés algo manual, arrastrás `dist/` a su panel y ya. El ruteo
 Para que el sitio quede 100% funcionando en el hosting:
 
 1. **Backend.** Subí uno de los dos (`backend/php/` o `backend/csharp/`), copiá su archivo de config de ejemplo al real y cargá el SMTP. (Ver [Formulario de contacto](#formulario-de-contacto).)
-2. **hCaptcha.** Pegá la **site key** en el frontend y el **secret** en la config del backend. (Ver [Anti-spam](#anti-spam-campo-trampa--hcaptcha).)
+2. **Captcha (Cloudflare Turnstile).** Pegá la **site key** en el frontend y el **secret** en la config del backend. (Ver [Anti-spam](#anti-spam-campo-trampa--cloudflare-turnstile).)
 3. **Conectar el form.** En `src/components/ui/ContactForm.tsx`, poné la URL del backend en `CONTACT_API_ENDPOINT`.
 4. **Compilar y subir.** Corré `npm run build:deploy` y subí el contenido de `dist/` a `public_html/`.
 

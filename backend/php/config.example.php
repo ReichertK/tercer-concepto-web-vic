@@ -29,7 +29,7 @@ return [
     // Si tuvieras más de un dominio, separalos con coma.
     'allowed_origin' => 'https://phir-it.ar',
 
-    // Secret de hCaptcha (lo da hcaptcha.com, va de la mano con la site key del frontend).
-    // Dejalo vacio para no exigir captcha. En produccion, carga el secret real.
-    'hcaptcha_secret' => '',
+    // Secret de Cloudflare Turnstile (lo da el panel de Cloudflare, va de la mano con la
+    // site key del frontend). Dejalo vacio para no exigir captcha. En produccion, carga el secret real.
+    'turnstile_secret' => '',
 ];

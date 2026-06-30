@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useRef, useState } from 'react'
-import HCaptcha from '@hcaptcha/react-hcaptcha'
+import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import { Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
 
 const NAME_REGEX = /^[\p{L}\p{M}'.\-\s]+$/u
@@ -34,14 +34,14 @@ type FormStatus = 'idle' | 'submitting' | 'success' | 'error' | 'fallback'
 
 const CONTACT_EMAIL = 'contacto@phir-it.ar'
 
-// La config que cambia seguido (endpoint del backend y site key de hCaptcha) vive en
+// La config que cambia seguido (endpoint del backend y site key de Turnstile) vive en
 // public/config.js, que queda como archivo suelto en el server. Así se edita por FTP
 // sin recompilar. Si no hay nada ahí, caemos a las variables de build. Ver el README.
 declare global {
   interface Window {
     __PHIRIT_CONFIG__?: {
       contactEndpoint?: string
-      hcaptchaSiteKey?: string
+      turnstileSiteKey?: string
     }
   }
 }
@@ -53,15 +53,15 @@ const runtimeConfig = typeof window !== 'undefined' ? window.__PHIRIT_CONFIG__ :
 const CONTACT_API_ENDPOINT =
   runtimeConfig?.contactEndpoint || import.meta.env.VITE_CONTACT_ENDPOINT || ''
 
-// Site key PÚBLICA de hCaptcha. Vacío = captcha apagado (el form manda igual).
-// Cuando tengas la real de hcaptcha.com, la ponés en config.js y se prende sola.
-const HCAPTCHA_SITE_KEY =
-  runtimeConfig?.hcaptchaSiteKey || import.meta.env.VITE_HCAPTCHA_SITE_KEY || ''
+// Site key PÚBLICA de Cloudflare Turnstile. Vacío = captcha apagado (el form manda igual).
+// Cuando tengas la real del panel de Cloudflare, la ponés en config.js y se prende sola.
+const TURNSTILE_SITE_KEY =
+  runtimeConfig?.turnstileSiteKey || import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
 
-// La de prueba de hCaptcha valida siempre pero NO sirve en producción, así que si
+// La de prueba de Turnstile valida siempre pero NO sirve en producción, así que si
 // quedó esa la tratamos como "sin captcha" para no romper los envíos.
-const HCAPTCHA_TEST_KEY = '10000000-ffff-ffff-ffff-000000000001'
-const CAPTCHA_ENABLED = HCAPTCHA_SITE_KEY !== '' && HCAPTCHA_SITE_KEY !== HCAPTCHA_TEST_KEY
+const TURNSTILE_TEST_KEY = '1x00000000000000000000AA'
+const CAPTCHA_ENABLED = TURNSTILE_SITE_KEY !== '' && TURNSTILE_SITE_KEY !== TURNSTILE_TEST_KEY
 
 function openMailClient(data: ContactFormData) {
   const subject = encodeURIComponent('Nueva consulta desde la web de PHIR-IT')
@@ -76,7 +76,7 @@ export default function ContactForm() {
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
   const [captchaError, setCaptchaError] = useState(false)
   const honeypotRef = useRef<HTMLInputElement>(null)
-  const captchaRef = useRef<HCaptcha>(null)
+  const captchaRef = useRef<TurnstileInstance>(null)
 
   const {
     register,
@@ -123,7 +123,7 @@ export default function ContactForm() {
           name: data.name,
           email: data.email,
           message: data.message,
-          'h-captcha-response': captchaToken ?? '',
+          'cf-turnstile-response': captchaToken ?? '',
         }),
       })
       const result = await res.json().catch(() => ({ success: false }))
@@ -151,7 +151,7 @@ export default function ContactForm() {
       setStatus('fallback')
       reset()
     } finally {
-      captchaRef.current?.resetCaptcha()
+      captchaRef.current?.reset()
       setCaptchaToken(null)
     }
   }
@@ -262,14 +262,15 @@ export default function ContactForm() {
 
       {CONTACT_API_ENDPOINT && CAPTCHA_ENABLED ? (
         <div>
-          <HCaptcha
+          <Turnstile
             ref={captchaRef}
-            sitekey={HCAPTCHA_SITE_KEY}
-            onVerify={(token) => {
+            siteKey={TURNSTILE_SITE_KEY}
+            onSuccess={(token) => {
               setCaptchaToken(token)
               setCaptchaError(false)
             }}
             onExpire={() => setCaptchaToken(null)}
+            onError={() => setCaptchaToken(null)}
           />
           {captchaError && (
             <p className="mt-1 text-xs text-red-600 dark:text-red-400">

@@ -62,26 +62,26 @@ app.MapPost("/contact", async (ContactRequest req, IConfiguration config, IHttpC
         return Results.BadRequest(new { success = false, message = "Datos inválidos." });
     }
 
-    // hCaptcha. Si hay un secret cargado, validamos el token contra hCaptcha antes
-    // de mandar. Sin secret, no se exige (queda solo el campo trampa).
-    var hcaptchaSecret = config["HCaptcha:Secret"];
-    if (!string.IsNullOrWhiteSpace(hcaptchaSecret))
+    // Cloudflare Turnstile. Si hay un secret cargado, validamos el token contra Cloudflare
+    // antes de mandar. Sin secret, no se exige (queda solo el campo trampa).
+    var turnstileSecret = config["Turnstile:Secret"];
+    if (!string.IsNullOrWhiteSpace(turnstileSecret))
     {
-        if (string.IsNullOrWhiteSpace(req.HCaptchaResponse))
+        if (string.IsNullOrWhiteSpace(req.TurnstileResponse))
         {
             return Results.BadRequest(new { success = false, message = "Falta la verificación del captcha." });
         }
 
         var http = httpClientFactory.CreateClient();
         var verify = await http.PostAsync(
-            "https://api.hcaptcha.com/siteverify",
+            "https://challenges.cloudflare.com/turnstile/v0/siteverify",
             new FormUrlEncodedContent(new Dictionary<string, string>
             {
-                ["secret"] = hcaptchaSecret,
-                ["response"] = req.HCaptchaResponse,
+                ["secret"] = turnstileSecret,
+                ["response"] = req.TurnstileResponse,
             }));
 
-        var verifyResult = await verify.Content.ReadFromJsonAsync<HCaptchaResult>();
+        var verifyResult = await verify.Content.ReadFromJsonAsync<TurnstileResult>();
         if (verifyResult is null || !verifyResult.Success)
         {
             return Results.BadRequest(new { success = false, message = "No pudimos validar el captcha." });
@@ -141,6 +141,6 @@ record ContactRequest(
     string? Email,
     string? Message,
     string? Botcheck,
-    [property: JsonPropertyName("h-captcha-response")] string? HCaptchaResponse);
+    [property: JsonPropertyName("cf-turnstile-response")] string? TurnstileResponse);
 
-record HCaptchaResult([property: JsonPropertyName("success")] bool Success);
+record TurnstileResult([property: JsonPropertyName("success")] bool Success);

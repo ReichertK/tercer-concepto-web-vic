@@ -36,3 +36,5 @@ backend/php/config.php
 # AI agent skills (autoskills)
 .agents/
 skills-lock.json
+
+phir-it-proyecto.zip
